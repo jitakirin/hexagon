@@ -32,12 +32,12 @@
     rel="stylesheet">
   <link
     rel="stylesheet"
-    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css"
+    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     type="text/css">
   <link
     href="css/base.css"
     rel="stylesheet">
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/github.min.css" rel="stylesheet">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
 
   <link
     rel="apple-touch-icon"
@@ -51,7 +51,7 @@
   <link rel="author" href="/humans.txt" />
 
   <!--[if lt IE 9]>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
@@ -115,7 +115,7 @@
             <li>
               <a href="https://bintray.com/jamming/maven/Hexagon/_latestVersion">
                 <img
-                  src="https://img.shields.io/bintray/v/jamming/maven/Hexagon.svg"
+                  src="https://api.bintray.com/packages/jamming/maven/Hexagon/images/download.svg"
                   alt="DownloadImg" />
               </a>
             </li>
@@ -126,12 +126,11 @@
 
     <div class="container">
 
-<h1>HEXAGON ${projectVersion}</h1>
+<h1>HEXAGON 0.10.4</h1>
 <h3>The atoms of your platform</h3>
 <p>Hexagon is a micro services framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
 <ul>
   <li><a href="rest.html">rest</a></li>
-  <li><a href="messaging.html">messaging</a> (TODO Write documentation)</li>
   <li><a href="serialization.html">serialization</a> (TODO Write documentation)</li>
   <li><a href="storage.html">storage</a> (TODO Write documentation)</li>
   <li><a href="events.html">events</a></li>
@@ -148,11 +147,23 @@
   <li>Be small</li>
 </ol>
 <p>The name and logo are an hexagon because it is the usual way of representing a microservice in a<br/>diagram.</p>
-<p><strong>DISCLAIMER</strong> The project status right now is beta. Use it at your own risk</p>
+<p>DISCLAIMER: The project status right now is beta. Use it at your own risk</p>
 <h2>Getting Started</h2>
 <p>Get the dependency from <a href="https://bintray.com/jamming/maven/Hexagon">JCenter</a> (you need to <a href="https://bintray.com/bintray/jcenter">setup the repository</a> first):</p>
-<p>Gradle:</p>
-<pre><code class="groovy">compile (&#39;co.there4:hexagon:${version}&#39;)
+<p>Minimal <code>build.gradle</code> example:</p>
+<pre><code class="groovy">buildscript {
+    repositories { jcenter () }
+    dependencies { classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6&quot; }
+}
+
+apply plugin: &quot;kotlin&quot;
+
+repositories { jcenter () }
+
+dependencies {
+    compile (&quot;co.there4:hexagon:0.10.3&quot;)
+    compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.14.v20161028&quot;)
+}
 </code></pre>
 <p>Maven:</p>
 <pre><code class="xml">&lt;dependency&gt;
@@ -162,19 +173,16 @@
 &lt;/dependency&gt;
 </code></pre>
 <p>Write the code:</p>
-<pre><code class="java">import co.there4.hexagon.rest.*
+<pre><code class="kotlin">import co.there4.hexagon.web.*
 
 fun main(args: Array&lt;String&gt;) {
-    applicationStart {
-        handlers {
-            get(&quot;hello/:name&quot;) { ok(&quot;Hello ${pathTokens[&quot;name&quot;]}!&quot;) }
-        }
-    }
+    get(&quot;/hello/{name}&quot;) { ok(&quot;Hello ${request[&quot;name&quot;]}!&quot;) }
+    run()
 }
 </code></pre>
-<p>Launch it and view the results at: <a href="http://localhost:2010/hello">http://localhost:2010/hello</a></p>
+<p>Launch it and view the results at: [http://localhost:2010/hello]</p>
 <h2>Build and Contribute</h2>
-<p>Check the <a href="https://github.com/jaguililla/hexagon">Github's readme file</a></p>
+<p>Check the <a href="https://github.com/jaguililla/hexagon#build-and-contribute">Github's readme file</a></p>
 
     <div id="push"></div>
   </div>
@@ -216,11 +224,11 @@ fun main(args: Array&lt;String&gt;) {
   <!-- Javascript: Placed at the end of the document so the pages load faster -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/groovy.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/gradle.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/xml.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/kotlin.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/groovy.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/gradle.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/xml.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/kotlin.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
   <!-- For Github links -->
   <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>

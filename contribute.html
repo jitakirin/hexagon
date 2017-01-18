@@ -32,12 +32,12 @@
     rel="stylesheet">
   <link
     rel="stylesheet"
-    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css"
+    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     type="text/css">
   <link
     href="css/base.css"
     rel="stylesheet">
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/github.min.css" rel="stylesheet">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
 
   <link
     rel="apple-touch-icon"
@@ -51,7 +51,7 @@
   <link rel="author" href="/humans.txt" />
 
   <!--[if lt IE 9]>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
@@ -115,7 +115,7 @@
             <li>
               <a href="https://bintray.com/jamming/maven/Hexagon/_latestVersion">
                 <img
-                  src="https://img.shields.io/bintray/v/jamming/maven/Hexagon.svg"
+                  src="https://api.bintray.com/packages/jamming/maven/Hexagon/images/download.svg"
                   alt="DownloadImg" />
               </a>
             </li>
@@ -129,8 +129,8 @@
 <h1>Release process</h1>
 <p>Steps:</p>
 <ul>
-  <li>Commit and push all changes</li>
   <li>Change version in gradle.properties</li>
+  <li>Commit and push all changes</li>
   <li>Build and deploy (binary and documentation)</li>
   <li>Push changes</li>
 </ul>
@@ -141,8 +141,27 @@
 <pre><code>gw release &amp;&amp; git push
 </code></pre>
 <p>Tools used: git-extras + bintray</p>
+<h1>Build</h1>
+<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in<br/><code>~/.gradle/gradle.properties</code>.</p>
+<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
+<p>Requires <a href="https://docs.docker.com/compose/install">Docker Compose installed</a></p>
+<p>You can build the project, generate the documentation and install it in your local repository<br/>typing:</p>
+<pre><code>git clone https://github.com/jaguililla/hexagon.git
+cd hexagon
+docker-compose up -d
+docker exec hexagon_mongodb_1 mongo /benchmark.js
+./gradle/wrapper clean site publishLocal
+</code></pre>
+<p>The results are located in the <code>/build</code> directory. And the site in <code>/build/site</code>.</p>
+<p>For more details about Hexagon's development. Read the [contribute] section.</p>
+<p>Code coverage grid:</p>
+<p><img src="https://codecov.io/gh/jaguililla/hexagon/branch/master/graphs/tree.svg" alt="coverage" /></p>
 <h1>Contribute</h1>
 <ul>
+  <li>
+  <p>gw clean site install libraries installAllTemplates should work ok. It is useful to add this<br/> command to the Git push hook.</p></li>
+  <li>
+  <p>Check <code>systems/aliases</code> for utility aliases.</p></li>
   <li>
   <p>The code should be formatted accordingly to the <code>codeStyleSettings.xml</code> file.<br/> For code and file names, etc. Use either camel case or snake case (if possible)<br/> avoid <code>-</code> in file names, etc.</p></li>
   <li>
@@ -174,6 +193,35 @@ Then something happened
   <li>
   <p>PRs should be done to master</p></li>
 </ul>
+<h2>Gradle wrapper setup</h2>
+<p>You can change Gradle version in <code>gradle/wrapper.properties</code>, but if you need to regenerate the<br/>wrapper, follow the next steps:</p>
+<ol>
+  <li>Add this to <code>build.gradle</code>:</li>
+</ol>
+<pre><code class="groovy">    wrapper {
+        String wrapperBaseFile = &quot;$projectDir/gradle/wrapper&quot;
+
+        gradleVersion = &#39;3.3&#39;
+        jarFile = wrapperBaseFile + &quot;.jar&quot;
+        scriptFile = wrapperBaseFile
+        distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+    }
+</code></pre>
+<ol>
+  <li>
+  <p>Execute <code>gradle wrapper</code></p></li>
+  <li>
+  <p>Remove the lines added in point 1 as they may cause problems in continuous integration<br/> environments</p></li>
+</ol>
+<h2>Lazybones template project</h2>
+<p>You have just created a simple project for managing your own Lazybones project<br/>templates. You get a build file (<code>build.gradle</code>) and a directory for putting<br/>your templates in (<code>templates</code>).</p>
+<p>To get started, simply create new directories under the <code>templates</code> directory<br/>and put the source of the different project templates into them. You can then<br/>package and install the templates locally with the command:</p>
+<pre><code>./gradlew installAllTemplates
+</code></pre>
+<p>You'll then be able to use Lazybones to create new projects from these templates.<br/>If you then want to distribute them, you will need to set up a Bintray account,<br/>populate the <code>repositoryUrl</code>, <code>repositoryUsername</code> and <code>repositoryApiKey</code> settings<br/>in <code>build.gradle</code>, add new Bintray packages in the repository via the Bintray<br/>UI, and finally publish the templates with</p>
+<pre><code>./gradlew publishAllTemplates
+</code></pre>
+<p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
 
     <div id="push"></div>
   </div>
@@ -215,11 +263,11 @@ Then something happened
   <!-- Javascript: Placed at the end of the document so the pages load faster -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/groovy.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/gradle.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/xml.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/kotlin.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/groovy.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/gradle.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/xml.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/kotlin.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
   <!-- For Github links -->
   <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>

@@ -32,12 +32,12 @@
     rel="stylesheet">
   <link
     rel="stylesheet"
-    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css"
+    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     type="text/css">
   <link
     href="css/base.css"
     rel="stylesheet">
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/github.min.css" rel="stylesheet">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
 
   <link
     rel="apple-touch-icon"
@@ -51,7 +51,7 @@
   <link rel="author" href="/humans.txt" />
 
   <!--[if lt IE 9]>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
@@ -115,7 +115,7 @@
             <li>
               <a href="https://bintray.com/jamming/maven/Hexagon/_latestVersion">
                 <img
-                  src="https://img.shields.io/bintray/v/jamming/maven/Hexagon.svg"
+                  src="https://api.bintray.com/packages/jamming/maven/Hexagon/images/download.svg"
                   alt="DownloadImg" />
               </a>
             </li>
@@ -127,28 +127,101 @@
     <div class="container">
 
 <h1>Builds</h1>
+<p>Build scripts:</p>
+<ul>
+  <li>
+    <p><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin.</p>
+    <ul>
+      <li>kotlinVersion:</li>
+    </ul>
+  </li>
+  <li>
+  <p>Setup Kotlin for a Gradle project.<br/> *</p></li>
+  <li>This scripts:<br/> *</li>
+  <li>
+  <ul>
+    <li>Adds Kotlin libraries</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>Setup code coverage report</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>Filter project resources with Gradle build variables</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>Apply better defaults for running tests and cleaning the project<br/> *</li>
+  </ul></li>
+  <li>You need to add the <code>kotlinVersion</code> variable to <code>gradle.properties</code> to use this script.<br/> *</li>
+  <li>buildscript {</li>
+  <li>repositories {</li>
+  <li>jcenter ()</li>
+  <li>}<br/> *</li>
+  <li>dependencies {</li>
+  <li>classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"</li>
+  <li>}</li>
+  <li>}</li>
+  <li>
+    <p><code>service.gradle</code>: Gradle's script for a service or application.</p>
+    <ul>
+      <li>Continuous run (AKA "Watch")</li>
+      <li>deployDir</li>
+      <li>serviceUser</li>
+      <li>serviceGroup</li>
+      <li><code>systemdScript</code>: script that support start/stop/status</li>
+    </ul>
+  </li>
+  <li>
+  <p>Tasks:<br/> *</p></li>
+  <li>
+  <ul>
+    <li>runService</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>install</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>buildInfo / processResources<br/> *</li>
+  </ul></li>
+  <li>Variables:<br/> *</li>
+  <li>
+  <ul>
+    <li>deployDir</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>serviceUser</li>
+  </ul></li>
+  <li>
+  <ul>
+    <li>serviceGroup</li>
+  </ul></li>
+</ul>
+<p>#</p>
+<h1>Copy this file to '/etc/systemd/system' and run:</h1>
+<h1>sudo systemctl start hexagon</h1>
+<h1>sudo systemctl enable hexagon</h1>
+<p>#</p>
+<ul>
+  <li><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).
+    <ul>
+      <li>siteSource</li>
+      <li>siteTarget</li>
+    </ul>
+  </li>
+</ul>
+<p>/*<br/> * To apply this script, you need to add the JBake plugin manually at the top of your build script<br/> * as that is not possible in included scripts like this one. These are the required lines to do so:<br/> *<br/> * plugins {<br/> * id 'org.xbib.gradle.plugin.jbake' version '1.2.1'<br/> * }<br/> */</p>
 <p>Templates:</p>
 <ul>
-  <li><code>hexagon.gradle</code>: use this Gradle's script for any Hexagon component (library or service).</li>
-  <li><code>service.gradle</code>: Gradle's script for a service or application.</li>
-</ul>
-<p>Features:</p>
-<ul>
-  <li><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).</li>
-  <li><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin.</li>
-</ul>
-<p>Scripts:</p>
-<ul>
-  <li><code>systemdScript</code>: script that support start/stop/status</li>
-</ul>
-<p>Templates:</p>
-<ul>
-  <li>TODO Document Lazybones templates.</li>
-</ul>
-<p>Goodies:</p>
-<ul>
-  <li>Continuous run (AKA "Watch")</li>
-  <li>Deployment structure</li>
+  <li>curl -s "https://get.sdkman.io" | bash</li>
+  <li>source "$HOME/.sdkman/bin/sdkman-init.sh"</li>
+  <li>sdk i lazybones</li>
+  <li>lazybones config set bintrayRepositories "pledbrook/lazybones-templates" "jamming/maven"</li>
+  <li>lazybones create hexagon-service service</li>
 </ul>
 <p><strong>TODO Complete documentation</strong></p>
 
@@ -192,11 +265,11 @@
   <!-- Javascript: Placed at the end of the document so the pages load faster -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/groovy.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/gradle.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/xml.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/languages/kotlin.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/groovy.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/gradle.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/xml.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/kotlin.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
   <!-- For Github links -->
   <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
