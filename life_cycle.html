@@ -126,63 +126,63 @@
 
     <div class="container">
 
-<h1>HEXAGON 0.10.6</h1>
-<h3>The atoms of your platform</h3>
-<p>Hexagon is a micro services framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
+<h1>Service Lifecycle</h1>
+<h2>Create a service</h2>
+<p>To build Hexagon services you have some Gradle helpers that you can use on your own project. To<br/>use them, you can use the online versions, or copy them to your <code>gradle</code> directory.</p>
+<p>Directory structure: standard Gradle structure. Gradle wrapper changed</p>
+<p>Configuration files: service.yaml (see configuration.md) and logback.xml</p>
+<p>Templates: Pebble (optional dependencies)</p>
+<h2>Create from template</h2>
+<p>Templates:</p>
+<pre><code class="bash">curl -s get.sdkman.io | bash &amp;&amp; source ~/.sdkman/bin/sdkman-init.sh
+sdk i lazybones
+mkdir .lazybones # Bug with Lazybones?
+lazybones config set bintrayRepositories pledbrook/lazybones-templates jamming/maven
+lazybones create hexagon-service service
+gradle/wrapper
+</code></pre>
+<h2>Running and Testing</h2>
+<p>Docker compose</p>
+<h2>Packaging and Deployment</h2>
+<p>Build scripts:</p>
 <ul>
-  <li><a href="life_cycle.html">Service Life Cycle</a>: provide helpers to build, run, package and deploy your service.</li>
-  <li><a href="rest.html">rest</a></li>
-  <li><a href="serialization.html">serialization</a>: TODO Write documentation</li>
-  <li><a href="storage.html">storage</a>: TODO Write documentation</li>
-  <li><a href="events.html">events</a></li>
-  <li><a href="configuration.html">configuration</a>: TODO Partial implementation</li>
-  <li><a href="templates.html">templates</a>: TODO Partial implementation</li>
-  <li><a href="scheduling.html">scheduling</a></li>
-  <li><a href="testing.html">testing</a>: TODO Write documentation</li>
+  <li><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin: Adds Kotlin libraries, setup coverage report,<br/>filter project resources with build variables. To use it you need to:
+    <ul>
+      <li>Define the <code>kotlinVersion</code> variable to <code>gradle.properties</code> file.</li>
+      <li>Add the following code to <code>build.gradle</code></li>
+    </ul>
+  </li>
 </ul>
-<p>The purpose of the project is to provide a micro services framework with the following priorities<br/>(in order):</p>
-<ol>
-  <li>Simple to use</li>
-  <li>Easily hackable</li>
-  <li>Be small</li>
-</ol>
-<p>The name and logo are an hexagon because it is the usual way of representing a microservice in a<br/>diagram.</p>
-<p>DISCLAIMER: The project status right now is beta. Use it at your own risk</p>
-<h2>Getting Started</h2>
-<p>Get the dependency from <a href="https://bintray.com/jamming/maven/Hexagon">JCenter</a> (you need to <a href="https://bintray.com/bintray/jcenter">setup the repository</a> first):</p>
-<p>Minimal <code>build.gradle</code> example:</p>
-<pre><code class="groovy">buildscript {
-    repositories { jcenter () }
-    dependencies { classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6&quot; }
-}
-
-apply plugin: &quot;kotlin&quot;
-
-repositories { jcenter () }
-
-dependencies {
-    compile (&quot;co.there4:hexagon:0.10.3&quot;)
-    compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.14.v20161028&quot;)
-}
+<pre><code class="Groovy">      buildscript {
+          repositories {
+              jcenter ()
+          }
+      
+          dependencies {
+              classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion&quot;
+          }
+      }
 </code></pre>
-<p>Maven:</p>
-<pre><code class="xml">&lt;dependency&gt;
-  &lt;groupId&gt;co.there4&lt;/groupId&gt;
-  &lt;artifactId&gt;hexagon&lt;/artifactId&gt;
-  &lt;version&gt;${version}&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>Write the code:</p>
-<pre><code class="kotlin">import co.there4.hexagon.web.*
-
-fun main(args: Array&lt;String&gt;) {
-    get(&quot;/hello/{name}&quot;) { ok(&quot;Hello ${request[&quot;name&quot;]}!&quot;) }
-    run()
-}
-</code></pre>
-<p>Launch it and view the results at: [http://localhost:2010/hello]</p>
-<h2>Build and Contribute</h2>
-<p>Check the <a href="https://github.com/jaguililla/hexagon#build-and-contribute">Github's readme file</a></p>
+<ul>
+  <li><code>service.gradle</code>: Gradle's script for a service or application.</li>
+</ul>
+<p>Tasks:<br/>- runService: for continuous run (AKA "Watch")<br/>- install: <code>systemdService</code>: script that support start/stop/status<br/>- buildInfo / processResources</p>
+<p>Variables:<br/>- deployDir<br/>- serviceUser<br/>- serviceGroup</p>
+<p>Use service:</p>
+<p>#</p>
+<h1>Copy this file to '/etc/systemd/system' and then:</h1>
+<h1>- To start the service execute: sudo systemctl start hexagon</h1>
+<h1>- To run the service at boot type: sudo systemctl enable hexagon</h1>
+<p>#</p>
+<ul>
+  <li><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).
+    <ul>
+      <li>siteSource</li>
+      <li>siteTarget</li>
+    </ul>
+  </li>
+</ul>
+<p>/*<br/> * To apply this script, you need to add the JBake plugin manually at the top of your build script<br/> * as that is not possible in included scripts like this one. These are the required lines to do so:<br/> *<br/> * plugins {<br/> * id 'org.xbib.gradle.plugin.jbake' version '1.2.1'<br/> * }<br/> */</p>
 
     <div id="push"></div>
   </div>

@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Hexagon
+    Contribute
   </title>
 
 
@@ -126,63 +126,102 @@
 
     <div class="container">
 
-<h1>HEXAGON 0.10.6</h1>
-<h3>The atoms of your platform</h3>
-<p>Hexagon is a micro services framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
+<h1>Release process</h1>
+<p>Steps:</p>
 <ul>
-  <li><a href="life_cycle.html">Service Life Cycle</a>: provide helpers to build, run, package and deploy your service.</li>
-  <li><a href="rest.html">rest</a></li>
-  <li><a href="serialization.html">serialization</a>: TODO Write documentation</li>
-  <li><a href="storage.html">storage</a>: TODO Write documentation</li>
-  <li><a href="events.html">events</a></li>
-  <li><a href="configuration.html">configuration</a>: TODO Partial implementation</li>
-  <li><a href="templates.html">templates</a>: TODO Partial implementation</li>
-  <li><a href="scheduling.html">scheduling</a></li>
-  <li><a href="testing.html">testing</a>: TODO Write documentation</li>
+  <li>Change version in gradle.properties</li>
+  <li>Commit and push all changes</li>
+  <li>Build and deploy (binary and documentation)</li>
+  <li>Push changes</li>
 </ul>
-<p>The purpose of the project is to provide a micro services framework with the following priorities<br/>(in order):</p>
+<p>Used aliases:</p>
+<pre><code>alias gw=&#39;gradle/wrapper&#39;
+</code></pre>
+<p>Command:</p>
+<pre><code>gw release &amp;&amp; git push
+</code></pre>
+<p>Tools used: git-extras and bintray</p>
+<h1>Build</h1>
+<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in<br/><code>~/.gradle/gradle.properties</code>.</p>
+<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
+<p>Requires <a href="https://docs.docker.com/compose/install">Docker Compose installed</a></p>
+<p>You can build the project, generate the documentation and install it in your local repository<br/>typing:</p>
+<pre><code>git clone https://github.com/jaguililla/hexagon.git
+cd hexagon
+docker-compose up -d
+docker exec hexagon_mongodb_1 mongo /benchmark.js
+./gradle/wrapper clean site publishLocal
+</code></pre>
+<p>The results are located in the <code>/build</code> directory. And the site in <code>/build/site</code>.</p>
+<p>For more details about Hexagon's development. Read the [contribute] section.</p>
+<p>Code coverage grid:</p>
+<p><img src="https://codecov.io/gh/jaguililla/hexagon/branch/master/graphs/tree.svg" alt="coverage" /></p>
+<h1>Contribute</h1>
+<ul>
+  <li>
+  <p>gw clean site install libraries installAllTemplates should work ok. It is useful to add this<br/> command to the Git push hook.</p></li>
+  <li>
+  <p>Check <code>systems/aliases</code> for utility aliases.</p></li>
+  <li>
+  <p>The code should be formatted accordingly to the <code>codeStyleSettings.xml</code> file.<br/> For code and file names, etc. Use either camel case or snake case (if possible)<br/> avoid <code>-</code> in file names, etc.</p></li>
+  <li>
+  <p>For a Pull Request to be accepted:</p></li>
+  <li>It has to pass all existing tests.</li>
+  <li>The coverage of the new code should be at least 90%</li>
+  <li>All public and protected methods and field must be documented using Dokka</li>
+  <li>
+    <p>Commit format: the preferred commit format would have:</p>
+    <ul>
+      <li>Summary: small summary of the change. In imperative form.</li>
+      <li>Description: a more complete description of the issue. It is optional.</li>
+      <li>issue #id: task Id. Optional.
+        <p>Summary</p>
+        <p>[Description]</p>
+        <p>[issue #id]</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Bug format: when filing bugs please use the given, when, then format. Ie:</p>
+    <pre><code>Given a condition
+And another condition
+When an action is taken
+And other after the first
+Then something happened
+</code></pre>
+  </li>
+  <li>
+  <p>PRs should be done to master</p></li>
+</ul>
+<h2>Gradle wrapper setup</h2>
+<p>You can change Gradle version in <code>gradle/wrapper.properties</code>, but if you need to regenerate the<br/>wrapper, follow the next steps:</p>
 <ol>
-  <li>Simple to use</li>
-  <li>Easily hackable</li>
-  <li>Be small</li>
+  <li>Add this to <code>build.gradle</code>:</li>
 </ol>
-<p>The name and logo are an hexagon because it is the usual way of representing a microservice in a<br/>diagram.</p>
-<p>DISCLAIMER: The project status right now is beta. Use it at your own risk</p>
-<h2>Getting Started</h2>
-<p>Get the dependency from <a href="https://bintray.com/jamming/maven/Hexagon">JCenter</a> (you need to <a href="https://bintray.com/bintray/jcenter">setup the repository</a> first):</p>
-<p>Minimal <code>build.gradle</code> example:</p>
-<pre><code class="groovy">buildscript {
-    repositories { jcenter () }
-    dependencies { classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6&quot; }
-}
+<pre><code class="groovy">    wrapper {
+        String wrapperBaseFile = &quot;$projectDir/gradle/wrapper&quot;
 
-apply plugin: &quot;kotlin&quot;
-
-repositories { jcenter () }
-
-dependencies {
-    compile (&quot;co.there4:hexagon:0.10.3&quot;)
-    compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.14.v20161028&quot;)
-}
+        gradleVersion = &#39;3.3&#39;
+        jarFile = wrapperBaseFile + &quot;.jar&quot;
+        scriptFile = wrapperBaseFile
+        distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+    }
 </code></pre>
-<p>Maven:</p>
-<pre><code class="xml">&lt;dependency&gt;
-  &lt;groupId&gt;co.there4&lt;/groupId&gt;
-  &lt;artifactId&gt;hexagon&lt;/artifactId&gt;
-  &lt;version&gt;${version}&lt;/version&gt;
-&lt;/dependency&gt;
+<ol>
+  <li>
+  <p>Execute <code>gradle wrapper</code></p></li>
+  <li>
+  <p>Remove the lines added in point 1 as they may cause problems in continuous integration<br/> environments</p></li>
+</ol>
+<h2>Lazybones template project</h2>
+<p>You have just created a simple project for managing your own Lazybones project<br/>templates. You get a build file (<code>build.gradle</code>) and a directory for putting<br/>your templates in (<code>templates</code>).</p>
+<p>To get started, simply create new directories under the <code>templates</code> directory<br/>and put the source of the different project templates into them. You can then<br/>package and install the templates locally with the command:</p>
+<pre><code>./gradlew installAllTemplates
 </code></pre>
-<p>Write the code:</p>
-<pre><code class="kotlin">import co.there4.hexagon.web.*
-
-fun main(args: Array&lt;String&gt;) {
-    get(&quot;/hello/{name}&quot;) { ok(&quot;Hello ${request[&quot;name&quot;]}!&quot;) }
-    run()
-}
+<p>You'll then be able to use Lazybones to create new projects from these templates.<br/>If you then want to distribute them, you will need to set up a Bintray account,<br/>populate the <code>repositoryUrl</code>, <code>repositoryUsername</code> and <code>repositoryApiKey</code> settings<br/>in <code>build.gradle</code>, add new Bintray packages in the repository via the Bintray<br/>UI, and finally publish the templates with</p>
+<pre><code>./gradlew publishAllTemplates
 </code></pre>
-<p>Launch it and view the results at: [http://localhost:2010/hello]</p>
-<h2>Build and Contribute</h2>
-<p>Check the <a href="https://github.com/jaguililla/hexagon#build-and-contribute">Github's readme file</a></p>
+<p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
 
     <div id="push"></div>
   </div>
