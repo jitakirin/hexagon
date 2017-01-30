@@ -126,53 +126,46 @@
 
     <div class="container">
 
-<h1>HEXAGON 0.10.7</h1>
+<h1>HEXAGON 0.10.8</h1>
 <h3>The atoms of your platform</h3>
-<p>Hexagon is a micro services framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
+<p>Hexagon is a microservices framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
 <ul>
-  <li><a href="life_cycle.html">Service Life Cycle</a>: provide helpers to build, run, package and deploy your service.</li>
-  <li><a href="rest.html">rest</a></li>
-  <li><a href="serialization.html">serialization</a>: TODO Write documentation</li>
-  <li><a href="storage.html">storage</a>: TODO Write documentation</li>
-  <li><a href="events.html">events</a></li>
-  <li><a href="configuration.html">configuration</a>: TODO Partial implementation</li>
-  <li><a href="templates.html">templates</a>: TODO Partial implementation</li>
-  <li><a href="scheduling.html">scheduling</a></li>
-  <li><a href="testing.html">testing</a>: TODO Write documentation</li>
+  <li>HTTP routing and HTML templates.</li>
+  <li>Serialization and storage of domain classes.</li>
+  <li>Asynchronous communication through events.</li>
+  <li>Task scheduling using Cron expressions.</li>
 </ul>
-<p>The purpose of the project is to provide a micro services framework with the following priorities<br/>(in order):</p>
+<p>The purpose of the project is to provide a microservices framework with the following priorities<br/>(in order):</p>
 <ol>
   <li>Simple to use</li>
   <li>Easily hackable</li>
   <li>Be small</li>
 </ol>
-<p>The name and logo are an hexagon because it is the usual way of representing a microservice in a<br/>diagram.</p>
-<p>DISCLAIMER: The project status right now is beta. Use it at your own risk</p>
-<h2>Getting Started</h2>
-<p>Get the dependency from <a href="https://bintray.com/jamming/maven/Hexagon">JCenter</a> (you need to <a href="https://bintray.com/bintray/jcenter">setup the repository</a> first):</p>
-<p>Minimal <code>build.gradle</code> example:</p>
+<p>DISCLAIMER: The project status is beta. Use it at your own risk. This is the coverage grid:</p>
+<p><img src="https://codecov.io/gh/jaguililla/hexagon/branch/master/graphs/tree.svg" alt="coverage" /></p>
+<h2>Getting started</h2>
+<p>For detailed information about how to create a service, please refer to the <a href="life_cycle.html">Service Life Cycle</a><br/>documentation.</p>
+<p>You can create a service from a <a href="https://github.com/pledbrook/lazybones">Lazybones</a> template. To do so type:<br/><code>lazybones create hexagon-service service</code></p>
+<p>Or you can write a <a href="https://gradle.org/">Gradle</a> project from scratch (Gradle 3 is required):</p>
+<p><code>build.gradle</code>:</p>
 <pre><code class="groovy">buildscript {
     repositories { jcenter () }
     dependencies { classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6&quot; }
 }
 
 apply plugin: &quot;kotlin&quot;
+apply plugin: &quot;application&quot;
+
+mainClassName = &#39;HelloKt&#39;
 
 repositories { jcenter () }
 
 dependencies {
-    compile (&quot;co.there4:hexagon:0.10.3&quot;)
-    compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.14.v20161028&quot;)
+    compile (&quot;co.there4:hexagon:0.10.7&quot;)
+    compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.16.v20170120&quot;)
 }
 </code></pre>
-<p>Maven:</p>
-<pre><code class="xml">&lt;dependency&gt;
-  &lt;groupId&gt;co.there4&lt;/groupId&gt;
-  &lt;artifactId&gt;hexagon&lt;/artifactId&gt;
-  &lt;version&gt;${version}&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>Write the code:</p>
+<p><code>src/main/kotlin/Hello.kt</code>:</p>
 <pre><code class="kotlin">import co.there4.hexagon.web.*
 
 fun main(args: Array&lt;String&gt;) {
@@ -180,9 +173,21 @@ fun main(args: Array&lt;String&gt;) {
     run()
 }
 </code></pre>
-<p>Launch it and view the results at: [http://localhost:2010/hello]</p>
+<p>Now you can run the service with <code>gradle run</code> and view the results at:<br/><a href="http://localhost:2010/hello/world">http://localhost:2010/hello/world</a></p>
+<h2>Further resources</h2>
+<ul>
+  <li><a href="life_cycle.html">Service Life Cycle</a>: provide helpers to create, build and package your services.</li>
+  <li><a href="rest.html">HTTP</a>: Web routing and filters. It is handled like the <a href="http://sinatrarb.com">Sinatra</a> Ruby framework.</li>
+  <li><a href="serialization.html">Serialization</a>: helper methods to serialize/deserialize <code>data classes</code> using different formats.</li>
+  <li><a href="storage.html">Storage</a>: utilities to persist Kotlin objects into <a href="https://www.mongodb.com">MongoDB</a> collections.</li>
+  <li><a href="events.html">Events</a>: support asynchronous communication with events through the <a href="http://www.rabbitmq.com">RabbitMQ</a> message broker.</li>
+  <li><a href="configuration.html">Configuration</a>: allow the configuration of the engine by using YAML files.</li>
+  <li><a href="scheduling.html">Scheduling</a>: supports the execution of tasks periodically using Cron expressions.</li>
+  <li><a href="templates.html">Templates</a>: allow the service to render results using <a href="http://www.mitchellbosecke.com/pebble/home">Pebble</a> or <a href="https://github.com/Kotlin/kotlinx.html">kotlinx.html</a>.</li>
+  <li><a href="testing.html">Testing</a>: Hexagon adds utilities to ease the testing of its services.</li>
+</ul>
 <h2>Build and Contribute</h2>
-<p>Check the <a href="https://github.com/jaguililla/hexagon#build-and-contribute">Github's readme file</a></p>
+<p>Refer to the <a href="contribute.html">contribute</a> section for detailed information about Hexagon's development.</p>
 
     <div id="push"></div>
   </div>

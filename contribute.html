@@ -126,60 +126,55 @@
 
     <div class="container">
 
-<h1>Release process</h1>
-<p>Steps:</p>
-<ul>
-  <li>Change version in gradle.properties</li>
-  <li>Commit and push all changes</li>
-  <li>Build and deploy (binary and documentation)</li>
-  <li>Push changes</li>
-</ul>
-<p>Used aliases:</p>
-<pre><code>alias gw=&#39;gradle/wrapper&#39;
-</code></pre>
-<p>Command:</p>
-<pre><code>gw release &amp;&amp; git push
-</code></pre>
-<p>Tools used: git-extras and bintray</p>
-<h1>Build</h1>
-<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in<br/><code>~/.gradle/gradle.properties</code>.</p>
-<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
+<h2>Build</h2>
 <p>Requires <a href="https://docs.docker.com/compose/install">Docker Compose installed</a></p>
 <p>You can build the project, generate the documentation and install it in your local repository<br/>typing:</p>
 <pre><code>git clone https://github.com/jaguililla/hexagon.git
 cd hexagon
 docker-compose up -d
 docker exec hexagon_mongodb_1 mongo /benchmark.js
-./gradle/wrapper clean site publishLocal
+./gradle/wrapper clean site publishLocal libraries installAllTemplates
 </code></pre>
 <p>The results are located in the <code>/build</code> directory. And the site in <code>/build/site</code>.</p>
-<p>For more details about Hexagon's development. Read the [contribute] section.</p>
-<p>Code coverage grid:</p>
-<p><img src="https://codecov.io/gh/jaguililla/hexagon/branch/master/graphs/tree.svg" alt="coverage" /></p>
-<h1>Contribute</h1>
+<h2>Local setup</h2>
+<p>You can define some useful aliases like:</p>
+<pre><code>alias gw=&#39;gradle/wrapper&#39;
+alias dcupd=&#39;docker-compose up -d&#39;
+alias hx=&#39;cd ${hexagonHome}&#39;
+alias hxall=&#39;hx &amp;&amp; gw clean site install libraries installAllTemplates&#39;
+</code></pre>
+<p>It is recommended that you add: <code>gradle/wrapper clean site install libraries installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
+<p>If you want to commit to the project. It is convenient to setup your own <a href="https://travis-ci.org">Travis</a> account to execute<br/>the CI job defined in <code>.travis.yml</code>.</p>
+<h2>Tools used</h2>
+<ul>
+  <li><a href="https://travis-ci.org">Travis</a>: For continuous integration.</li>
+  <li><a href="https://codecov.io">Codecov</a>: To check code coverage.</li>
+  <li><a href="https://github.com">Github</a>: Web hosting, project board and code hosting.</li>
+  <li><a href="https://bintray.com">Bintray</a>: Artifact repository for JARs.</li>
+  <li><a href="https://github.com/tj/git-extras">Git Extras</a>: Git goodies.</li>
+</ul>
+<h2>Bintray publish</h2>
+<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in<br/><code>~/.gradle/gradle.properties</code>.</p>
+<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
+<h2>Contribute</h2>
 <ul>
   <li>
-  <p>gw clean site install libraries installAllTemplates should work ok. It is useful to add this<br/> command to the Git push hook.</p></li>
-  <li>
-  <p>Check <code>systems/aliases</code> for utility aliases.</p></li>
-  <li>
-  <p>The code should be formatted accordingly to the <code>codeStyleSettings.xml</code> file.<br/> For code and file names, etc. Use either camel case or snake case (if possible)<br/> avoid <code>-</code> in file names, etc.</p></li>
+  <p>For code and file names, use either camel case or snake case only. Ie: avoid <code>-</code> in file names if<br/> it is possible.</p></li>
   <li>
   <p>For a Pull Request to be accepted:</p></li>
-  <li>It has to pass all existing tests.</li>
-  <li>The coverage of the new code should be at least 90%</li>
-  <li>All public and protected methods and field must be documented using Dokka</li>
+  <li>It has to pass all PR checks.</li>
+  <li>All public and internal methods and field must be documented using Dokka</li>
   <li>
-    <p>Commit format: the preferred commit format would have:</p>
-    <ul>
-      <li>Summary: small summary of the change. In imperative form.</li>
-      <li>Description: a more complete description of the issue. It is optional.</li>
-      <li>issue #id: task Id. Optional.
-        <p>Summary</p>
-        <p>[Description]</p>
-        <p>[issue #id]</p>
-      </li>
-    </ul>
+  <p>Commit format: the preferred commit format would have:</p></li>
+  <li>Summary: small summary of the change. In imperative form.</li>
+  <li>Description: a more complete description of the issue. It is optional.</li>
+  <li>issue #id: task Id. Optional.
+    <pre><code>Summary
+
+[Description]
+
+[issue #id]
+</code></pre>
   </li>
   <li>
     <p>Bug format: when filing bugs please use the given, when, then format. Ie:</p>
@@ -214,14 +209,26 @@ Then something happened
   <p>Remove the lines added in point 1 as they may cause problems in continuous integration<br/> environments</p></li>
 </ol>
 <h2>Lazybones template project</h2>
-<p>You have just created a simple project for managing your own Lazybones project<br/>templates. You get a build file (<code>build.gradle</code>) and a directory for putting<br/>your templates in (<code>templates</code>).</p>
-<p>To get started, simply create new directories under the <code>templates</code> directory<br/>and put the source of the different project templates into them. You can then<br/>package and install the templates locally with the command:</p>
+<p>The Lazybones templates are located in the <code>templates</code> directory. Each subdirectory is a different<br/>template.</p>
+<p>You can package and install the templates locally with the command:</p>
 <pre><code>./gradlew installAllTemplates
 </code></pre>
-<p>You'll then be able to use Lazybones to create new projects from these templates.<br/>If you then want to distribute them, you will need to set up a Bintray account,<br/>populate the <code>repositoryUrl</code>, <code>repositoryUsername</code> and <code>repositoryApiKey</code> settings<br/>in <code>build.gradle</code>, add new Bintray packages in the repository via the Bintray<br/>UI, and finally publish the templates with</p>
+<p>You'll then be able to use Lazybones to create new projects from these templates. To distribute<br/>them, you will need to set up a Bintray account, populate the <code>repositoryUrl</code>, <code>repositoryUsername</code><br/>and <code>repositoryApiKey</code> settings in <code>build.gradle</code>, and finally publish the templates with:</p>
 <pre><code>./gradlew publishAllTemplates
 </code></pre>
 <p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
+<h2>Release process</h2>
+<p>Steps:</p>
+<ul>
+  <li>Change version in gradle.properties</li>
+  <li>Commit all changes</li>
+  <li>Build and publish (binary and documentation)</li>
+  <li>Tag changes</li>
+  <li>Push changes and tag</li>
+</ul>
+<p>Command:</p>
+<pre><code>gw release &amp;&amp; git push --tags
+</code></pre>
 
     <div id="push"></div>
   </div>
