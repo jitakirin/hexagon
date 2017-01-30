@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SettingsManager - hexagon</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">hexagon</a>&nbsp;/&nbsp;<a href="index.html">co.there4.hexagon.settings</a>&nbsp;/&nbsp;<a href=".">SettingsManager</a><br/>
+<br/>
+<h1>SettingsManager</h1>
+<code><span class="keyword">object </span><span class="identifier">SettingsManager</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-settings/index.html"><span class="identifier">Settings</span></a></code>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="-settings/environment.html">environment</a></td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">environment</span><span class="symbol">: </span><a href="-environment/index.html"><span class="identifier">Environment</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<a href="-settings/parameters.html">parameters</a></td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">parameters</span><span class="symbol">: </span><span class="identifier">Map</span><span class="symbol">&lt;</span><span class="identifier">String</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="-settings/get.html">get</a></td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="co.there4.hexagon.settings.Settings$get(kotlin.Array((kotlin.String)))/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Any</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<a href="-settings/require-setting.html">requireSetting</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">requireSetting</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="co.there4.hexagon.settings.Settings$requireSetting(kotlin.Array((kotlin.String)))/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+<a href="-settings/setting.html">setting</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">setting</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="co.there4.hexagon.settings.Settings$setting(kotlin.Array((kotlin.String)))/key">key</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="../co.there4.hexagon.serialization/kotlin.-any/convert-to-map.html">convertToMap</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">Any</span><span class="symbol">.</span><span class="identifier">convertToMap</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Map</span><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<a href="../co.there4.hexagon.serialization/kotlin.-any/serialize.html">serialize</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">Any</span><span class="symbol">.</span><span class="identifier">serialize</span><span class="symbol">(</span><span class="identifier" id="co.there4.hexagon.serialization$serialize(kotlin.Any, kotlin.String)/contentType">contentType</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span>&nbsp;<span class="symbol">=</span>&nbsp;defaultFormat<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">String</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

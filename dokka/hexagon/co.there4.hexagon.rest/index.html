@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>co.there4.hexagon.rest - hexagon</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">hexagon</a>&nbsp;/&nbsp;<a href=".">co.there4.hexagon.rest</a><br/>
+<br/>
+<h2>Package co.there4.hexagon.rest</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="-rest-base-crud/index.html">RestBaseCrud</a></td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">RestBaseCrud</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">&gt;</span></code>
+<p>TODO Implement pattern find with filters made from query strings (?=,...&)
+TODO Implement pattern delete with filters made from query strings (see above)</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="-rest-crud/index.html">RestCrud</a></td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RestCrud</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">, </span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-rest-base-crud/index.html"><span class="identifier">RestBaseCrud</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
+<p>TODO Implement pattern find with filters made from query strings (?=,...&)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="crud.html">crud</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">, </span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">&gt;</span> <a href="../co.there4.hexagon.web/-server/index.html"><span class="identifier">Server</span></a><span class="symbol">.</span><span class="identifier">crud</span><span class="symbol">(</span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.web.Server, co.there4.hexagon.repository.MongoIdRepository((co.there4.hexagon.rest.crud.T, co.there4.hexagon.rest.crud.K)), kotlin.Boolean)/repository">repository</span><span class="symbol">:</span>&nbsp;<a href="../co.there4.hexagon.repository/-mongo-id-repository/index.html"><span class="identifier">MongoIdRepository</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">,</span>&nbsp;<span class="identifier">K</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.web.Server, co.there4.hexagon.repository.MongoIdRepository((co.there4.hexagon.rest.crud.T, co.there4.hexagon.rest.crud.K)), kotlin.Boolean)/readOnly">readOnly</span><span class="symbol">:</span>&nbsp;<span class="identifier">Boolean</span>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">, </span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">&gt;</span> <span class="identifier">crud</span><span class="symbol">(</span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.repository.MongoIdRepository((co.there4.hexagon.rest.crud.T, co.there4.hexagon.rest.crud.K)), kotlin.Boolean)/repository">repository</span><span class="symbol">:</span>&nbsp;<a href="../co.there4.hexagon.repository/-mongo-id-repository/index.html"><span class="identifier">MongoIdRepository</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">,</span>&nbsp;<span class="identifier">K</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.repository.MongoIdRepository((co.there4.hexagon.rest.crud.T, co.there4.hexagon.rest.crud.K)), kotlin.Boolean)/readOnly">readOnly</span><span class="symbol">:</span>&nbsp;<span class="identifier">Boolean</span>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">&gt;</span> <a href="../co.there4.hexagon.web/-server/index.html"><span class="identifier">Server</span></a><span class="symbol">.</span><span class="identifier">crud</span><span class="symbol">(</span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.web.Server, co.there4.hexagon.repository.MongoRepository((co.there4.hexagon.rest.crud.T)), kotlin.Boolean)/repository">repository</span><span class="symbol">:</span>&nbsp;<a href="../co.there4.hexagon.repository/-mongo-repository/index.html"><span class="identifier">MongoRepository</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.web.Server, co.there4.hexagon.repository.MongoRepository((co.there4.hexagon.rest.crud.T)), kotlin.Boolean)/readOnly">readOnly</span><span class="symbol">:</span>&nbsp;<span class="identifier">Boolean</span>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Any</span><span class="symbol">&gt;</span> <span class="identifier">crud</span><span class="symbol">(</span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.repository.MongoRepository((co.there4.hexagon.rest.crud.T)), kotlin.Boolean)/repository">repository</span><span class="symbol">:</span>&nbsp;<a href="../co.there4.hexagon.repository/-mongo-repository/index.html"><span class="identifier">MongoRepository</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="co.there4.hexagon.rest$crud(co.there4.hexagon.repository.MongoRepository((co.there4.hexagon.rest.crud.T)), kotlin.Boolean)/readOnly">readOnly</span><span class="symbol">:</span>&nbsp;<span class="identifier">Boolean</span>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
