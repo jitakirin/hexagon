@@ -127,8 +127,8 @@
     <div class="container">
 
 <h1>REST</h1>
-<pre><code>import co.there4.hexagon.repository.MongoIdRepository
-import co.there4.hexagon.repository.mongoDatabase
+<pre><code>import co.there4.hexagon.store.MongoIdRepository
+import co.there4.hexagon.store.mongoDatabase
 import co.there4.hexagon.serialization.parse
 import co.there4.hexagon.serialization.parseList
 import co.there4.hexagon.serialization.serialize
@@ -169,8 +169,8 @@ import java.net.URL
         server.stop()
     }
 
-    private fun param (json: String?) = json?.parse (Parameter::class) ?: error (&quot;&quot;)
-    private fun paramList (json: String?) = json?.parseList (Parameter::class) ?: error (&quot;&quot;)
+    private fun param (json: String?) = json?.parse (Parameter::class) ?: err
+    private fun paramList (json: String?) = json?.parseList (Parameter::class) ?: err
 }
 </code></pre>
 

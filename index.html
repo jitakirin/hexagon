@@ -126,7 +126,7 @@
 
     <div class="container">
 
-<h1>HEXAGON 0.11.1</h1>
+<h1>HEXAGON 0.12.0</h1>
 <h3>The atoms of your platform</h3>
 <p>Hexagon is a microservices framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
 <ul>
@@ -166,7 +166,7 @@ dependencies {
 }
 </code></pre>
 <p><code>src/main/kotlin/Hello.kt</code>:</p>
-<pre><code class="kotlin">import co.there4.hexagon.web.*
+<pre><code class="kotlin">import co.there4.hexagon.server.*
 
 fun main(args: Array&lt;String&gt;) {
     get(&quot;/hello/{name}&quot;) { ok(&quot;Hello ${request[&quot;name&quot;]}!&quot;) }

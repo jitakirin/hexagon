@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Contribute
+    Ideas
   </title>
 
 
@@ -126,108 +126,28 @@
 
     <div class="container">
 
-<h2>Build</h2>
-<p>Requires <a href="https://docs.docker.com/compose/install">Docker Compose installed</a></p>
-<p>You can build the project, generate the documentation and install it in your local repository<br/>typing:</p>
-<pre><code>git clone https://github.com/jaguililla/hexagon.git
-cd hexagon
-docker-compose up -d
-./gradle/wrapper clean site publishLocal libraries installAllTemplates
-</code></pre>
-<p>The results are located in the <code>/build</code> directory. And the site in <code>/build/site</code>.</p>
-<h2>Local setup</h2>
-<p>You can define some useful aliases like:</p>
-<pre><code>alias gw=&#39;gradle/wrapper&#39;
-alias dcupd=&#39;docker-compose up -d&#39;
-alias hx=&#39;cd ${hexagonHome}&#39;
-alias hxall=&#39;hx &amp;&amp; gw clean site install libraries installAllTemplates&#39;
-</code></pre>
-<p>It is recommended that you add: <code>gradle/wrapper clean site install libraries installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
-<p>If you want to commit to the project. It is convenient to setup your own <a href="https://travis-ci.org">Travis</a> account to execute<br/>the CI job defined in <code>.travis.yml</code>.</p>
-<h2>Tools used</h2>
-<ul>
-  <li><a href="https://travis-ci.org">Travis</a>: For continuous integration.</li>
-  <li><a href="https://codecov.io">Codecov</a>: To check code coverage.</li>
-  <li><a href="https://github.com">Github</a>: Web hosting, project board and code hosting.</li>
-  <li><a href="https://bintray.com">Bintray</a>: Artifact repository for JARs.</li>
-  <li><a href="https://github.com/tj/git-extras">Git Extras</a>: Git goodies.</li>
-</ul>
-<h2>Bintray publish</h2>
-<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in<br/><code>~/.gradle/gradle.properties</code>.</p>
-<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
-<h2>Contribute</h2>
-<ul>
-  <li>
-  <p>For code and file names, use either camel case or snake case only. Ie: avoid <code>-</code> in file names if<br/> it is possible.</p></li>
-  <li>
-  <p>For a Pull Request to be accepted:</p></li>
-  <li>It has to pass all PR checks.</li>
-  <li>All public and internal methods and field must be documented using Dokka</li>
-  <li>
-  <p>Commit format: the preferred commit format would have:</p></li>
-  <li>Summary: small summary of the change. In imperative form.</li>
-  <li>Description: a more complete description of the issue. It is optional.</li>
-  <li>issue #id: task Id. Optional.
-    <pre><code>Summary
+<p>Composition over inheritance</p>
+<p>Auth <a href="https://shiro.apache.org/java-authentication-guide.html">https://shiro.apache.org/java-authentication-guide.html</a><br/>Subject: uid (can be a system, not a person)<br/>Credential: pass, public Key<br/>Principal: personal data name, nick, birthday<br/>Role:<br/>Permission: action:type:id<br/>User: physical human user</p>
+<p>Settings/Configuration: a component will have its credentials (as a user) to login in services<br/>it will have a subject (its project name)</p>
+<p>System:</p>
+<p>Components: API, message broker<br/>Applications: are a kind of component which is final (meant for users)<br/>WebApplication, Desktop Application, Mobile Application or Browser Aplication</p>
+<p>For components:<br/>Services: local or remote functionalities (interfaces), implementations will be *Client or<br/>*Engine Ie:<br/> MessagingService &lt;- RabbitMqClient, JeroMqClient<br/> StorageService &lt;- RedisClient, MongoDbClient, CouchBaseClient</p>
+<pre><code>SettingsService &lt;- LocalSettingsEngine, EventSettingsEngine
+ServerService &lt;- ServletEngine, JettyServletEngine, UndertowEngine
+ClientService &lt;- OkHttpEngine
+SerializationService &lt;- MessagePackFormat
+TemplateService
 
-[Description]
-
-[issue #id]
+MetricsService &lt;- MetricsClient TODO
+RegistryService &lt;- ConsulClient TODO
 </code></pre>
-  </li>
-  <li>
-    <p>Bug format: when filing bugs please use the given, when, then format. Ie:</p>
-    <pre><code>Given a condition
-And another condition
-When an action is taken
-And other after the first
-Then something happened
-</code></pre>
-  </li>
-  <li>
-  <p>PRs should be done to master</p></li>
-</ul>
-<h2>Gradle wrapper setup</h2>
-<p>You can change Gradle version in <code>gradle/wrapper.properties</code>, but if you need to regenerate the<br/>wrapper, follow the next steps:</p>
-<ol>
-  <li>Add this to <code>build.gradle</code>:</li>
-</ol>
-<pre><code class="groovy">    wrapper {
-        String wrapperBaseFile = &quot;$projectDir/gradle/wrapper&quot;
-
-        gradleVersion = &#39;3.3&#39;
-        jarFile = wrapperBaseFile + &#39;.jar&#39;
-        scriptFile = wrapperBaseFile
-        distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
-    }
-</code></pre>
-<ol>
-  <li>
-  <p>Execute <code>gradle wrapper</code></p></li>
-  <li>
-  <p>Remove the lines added in point 1 as they may cause problems in continuous integration<br/> environments</p></li>
-</ol>
-<h2>Lazybones template project</h2>
-<p>The Lazybones templates are located in the <code>templates</code> directory. Each subdirectory is a different<br/>template.</p>
-<p>You can package and install the templates locally with the command:</p>
-<pre><code>./gradlew installAllTemplates
-</code></pre>
-<p>You'll then be able to use Lazybones to create new projects from these templates. To distribute<br/>them, you will need to set up a Bintray account, populate the <code>repositoryUrl</code>, <code>repositoryUsername</code><br/>and <code>repositoryApiKey</code> settings in <code>build.gradle</code>, and finally publish the templates with:</p>
-<pre><code>./gradlew publishAllTemplates
-</code></pre>
-<p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
-<h2>Release process</h2>
-<p>Steps:</p>
-<ul>
-  <li>Change version in gradle.properties</li>
-  <li>Commit all changes</li>
-  <li>Build and publish (binary and documentation)</li>
-  <li>Tag changes</li>
-  <li>Push changes and tag</li>
-</ul>
-<p>Command:</p>
-<pre><code>gw release &amp;&amp; git push --tags
-</code></pre>
+<p>ServiceClient: implementations to access a concrete type of service<br/>ComponentClient:</p>
+<p>Managers: singletons to manage across an application and/or between services<br/> EventManager<br/> SettingsManager<br/> TemplatesManager</p>
+<p>Packaging and deployment</p>
+<p>TODO<br/><code>Exchange.call</code> method to redirect to other handler<br/>Add auto parsing/serializing of body/response based on a type<br/> Ie: Add get&lt;Request, Response&gt;("/path") {} (for all methods)<br/>Add <code>Exchange.body/headers/params</code> as Sinatra. Ie: headers["Date"] = date<br/>Streaming support if returning a stream</p>
+<p>Settings load order:<br/> resources &lt;- system properties &lt;- environment variables &lt;- files &lt;- command line arguments</p>
+<p>Render template if no route found and template with that name exist (after filter)</p>
+<p>Use Hexagon static site builder (to be developed) to generate site<br/>Create kjava.gradle, kjavascript.gradle, kandroid.gradle</p>
 
     <div id="push"></div>
   </div>
