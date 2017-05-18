@@ -1,0 +1,12 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="115">
+  <g>
+    <path
+      style="fill: #88AA00; stroke: #88AA00; stroke-width: 10;"
+      d="m 125,57 -30,52 -60,0 -30,-52 30,-52 60,0 z" />
+
+    <text style="font-size: 90px; font-weight: bold; fill: #FFF; font-family: Sans" x="27" y="90">
+      <tspan x="27" y="90">H</tspan>
+    </text>
+  </g>
+</svg>
