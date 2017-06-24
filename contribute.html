@@ -144,6 +144,9 @@ alias hxall=&#39;hx &amp;&amp; gw clean site install libraries installAllTemplat
 </code></pre>
 <p>It is recommended that you add: <code>gradle/wrapper clean site install libraries installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
 <p>If you want to commit to the project. It is convenient to setup your own <a href="https://travis-ci.org">Travis</a> account to execute<br/>the CI job defined in <code>.travis.yml</code>.</p>
+<p>To use IntelliJ Idea you need to enable <code>Build, Execution, Deployment &gt; Build Tools &gt; Gradle &gt;
+Create separate module per source set</code> in order to compile JMH tests.</p>
+<p>Inside Idea IDE, you need to review Kotlin's settings to make sure JVM 1.8 is used<br/>(<code>Project Structure &gt; Modules &gt; &lt;Any Module&gt; &gt; Kotlin &gt; Target Platform</code>).</p>
 <h2>Tools used</h2>
 <ul>
   <li><a href="https://travis-ci.org">Travis</a>: For continuous integration.</li>
