@@ -15,9 +15,9 @@
   <meta name="keywords" content="Hexagon, microservices, Java, Kotlin">
   <meta name="generator" content="JBake">
 
-  <meta name="theme-color" content="#88AA00">
-  <meta name="msapplication-navbutton-color" content="#88AA00">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#88AA00">
+  <meta name="theme-color" content="#135AA1">
+  <meta name="msapplication-navbutton-color" content="#135AA1">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#135AA1">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -66,10 +66,10 @@
       <a href="https://github.com/jaguililla/hexagon" class="hidden-sm hidden-xs">
         <img
           style="position: absolute; top: 0; right: 0; border: 0;"
-          src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"
+          src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
           alt="Fork me on GitHub"
           data-canonical-src=
-            "https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
+            "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
       </a>
       <div class="container">
         <div class="navbar-header">
@@ -113,9 +113,10 @@
               </a>
             </li>
             <li>
-              <a href="https://bintray.com/jamming/maven/Hexagon/_latestVersion">
+              <a href="https://bintray.com/jamming/maven/hexagon_core/_latestVersion">
                 <img
-                  src="https://api.bintray.com/packages/jamming/maven/Hexagon/images/download.svg"
+                  src=
+                    "https://api.bintray.com/packages/jamming/maven/hexagon_core/images/download.svg"
                   alt="DownloadImg" />
               </a>
             </li>
@@ -132,22 +133,22 @@
 <pre><code>git clone https://github.com/jaguililla/hexagon.git
 cd hexagon
 docker-compose up -d
-./gradle/wrapper clean site publishLocal libraries installAllTemplates
+./gradlew clean site publishLocal installAllTemplates
 </code></pre>
-<p>The results are located in the <code>/build</code> directory. And the site in <code>/build/site</code>.</p>
-<h2>Local setup</h2>
+<p>The results are located in the <code>/build</code> directory. And the site in <code>/hexagon_site/build</code>.</p>
+<h2>Local Setup</h2>
 <p>You can define some useful aliases like:</p>
-<pre><code>alias gw=&#39;gradle/wrapper&#39;
+<pre><code>alias gw=&#39;./gradlew&#39;
 alias dcupd=&#39;docker-compose up -d&#39;
 alias hx=&#39;cd ${hexagonHome}&#39;
-alias hxall=&#39;hx &amp;&amp; gw clean site install libraries installAllTemplates&#39;
+alias hxall=&#39;hx &amp;&amp; gw clean site installDist installAllTemplates&#39;
 </code></pre>
-<p>It is recommended that you add: <code>gradle/wrapper clean site install libraries installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
+<p>It is recommended that you add: <code>gradlew clean site installDist installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
 <p>If you want to commit to the project. It is convenient to setup your own <a href="https://travis-ci.org">Travis</a> account to execute<br/>the CI job defined in <code>.travis.yml</code>.</p>
 <p>To use IntelliJ Idea you need to enable <code>Build, Execution, Deployment &gt; Build Tools &gt; Gradle &gt;
 Create separate module per source set</code> in order to compile JMH tests.</p>
-<p>Inside Idea IDE, you need to review Kotlin's settings to make sure JVM 1.8 is used<br/>(<code>Project Structure &gt; Modules &gt; &lt;Any Module&gt; &gt; Kotlin &gt; Target Platform</code>).</p>
-<h2>Tools used</h2>
+<p>Inside Idea IDE, you need to review Kotlin's settings to make sure JVM 1.8 and API 1.1 is used<br/>(<code>Project Structure &gt; Modules &gt; &lt;Any Module&gt; &gt; Kotlin &gt; Target Platform</code>).</p>
+<h2>Tools Used</h2>
 <ul>
   <li><a href="https://travis-ci.org">Travis</a>: For continuous integration.</li>
   <li><a href="https://codecov.io">Codecov</a>: To check code coverage.</li>
@@ -155,63 +156,46 @@ Create separate module per source set</code> in order to compile JMH tests.</p>
   <li><a href="https://bintray.com">Bintray</a>: Artifact repository for JARs.</li>
   <li><a href="https://github.com/tj/git-extras">Git Extras</a>: Git goodies.</li>
 </ul>
-<h2>Bintray publish</h2>
-<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in<br/><code>~/.gradle/gradle.properties</code>.</p>
+<h2>Bintray Publish</h2>
+<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in <code>local.gradle</code>. Ie:</p>
+<pre><code class="groovy">ext.bintrayUser = &#39;jaguililla&#39;
+ext.bintrayKey = &#39;cafebabe&#39;
+</code></pre>
 <p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
 <h2>Contribute</h2>
 <ul>
   <li>
-  <p>For code and file names, use either camel case or snake case only. Ie: avoid <code>-</code> in file names if<br/> it is possible.</p></li>
+  <p>For code, file names, tags and branches use either camel case or snake case only. Ie: avoid <code>-</code> in<br/> file names if it is possible.</p></li>
   <li>
   <p>For a Pull Request to be accepted:</p></li>
   <li>It has to pass all PR checks.</li>
-  <li>All public and internal methods and field must be documented using Dokka</li>
+  <li>All public and internal methods and field must be documented using<br/><a href="https://github.com/Kotlin/dokka">Dokka</a>.</li>
   <li>
   <p>Commit format: the preferred commit format would have:</p></li>
   <li>Summary: small summary of the change. In imperative form.</li>
   <li>Description: a more complete description of the issue. It is optional.</li>
-  <li>issue #id: task Id. Optional.
-    <pre><code>Summary
-
-[Description]
-
-[issue #id]
-</code></pre>
-  </li>
-  <li>
-    <p>Bug format: when filing bugs please use the given, when, then format. Ie:</p>
-    <pre><code>Given a condition
-And another condition
-When an action is taken
-And other after the first
-Then something happened
-</code></pre>
-  </li>
-  <li>
-  <p>PRs should be done to master</p></li>
+  <li>Issue Id: it should be written in Github's format: <code>#taskNumber</code>. Optional.</li>
 </ul>
-<h2>Gradle wrapper setup</h2>
-<p>You can change Gradle version in <code>gradle/wrapper.properties</code>, but if you need to regenerate the<br/>wrapper, follow the next steps:</p>
-<ol>
-  <li>Add this to <code>build.gradle</code>:</li>
-</ol>
-<pre><code class="groovy">    wrapper {
-        String wrapperBaseFile = &quot;$projectDir/gradle/wrapper&quot;
-
-        gradleVersion = &#39;3.3&#39;
-        jarFile = wrapperBaseFile + &#39;.jar&#39;
-        scriptFile = wrapperBaseFile
-        distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
-    }
-</code></pre>
-<ol>
-  <li>
-  <p>Execute <code>gradle wrapper</code></p></li>
-  <li>
-  <p>Remove the lines added in point 1 as they may cause problems in continuous integration<br/> environments</p></li>
-</ol>
-<h2>Lazybones template project</h2>
-<p>The Lazybones templates are located in the <code>templates</code> directory. Each subdirectory is a different<br/>template.</p>
+<p>```<br/> Summary</p>
+<p>[Description]</p>
+<p>[#Id]<br/> ```</p>
+<ul>
+  <li>Bug format: when filing bugs please use the given, when, then format. Ie:</li>
+</ul>
+<p><code>
+  Given a condition
+  And another condition
+  When an action is taken
+  And other after the first
+  Then something happened
+</code></p>
+<ul>
+  <li>PRs should be done to <code>master</code></li>
+</ul>
+<h2>Tasks and Milestones</h2>
+<p>Project's tasks and milestones are tracked in a <a href="https://github.com/jaguililla/hexagon/projects/1">Github board</a>. You can use that board to check the<br/>roadmap or pick tasks that you wish to contribute.</p>
+<h2>Lazybones Templates</h2>
+<p>The <a href="https://github.com/pledbrook/lazybones">Lazybones</a> templates are located in the <code>hexagon_templates</code> module. Each subdirectory is a<br/>different template.</p>
 <p>You can package and install the templates locally with the command:</p>
 <pre><code>./gradlew installAllTemplates
 </code></pre>
@@ -219,7 +203,7 @@ Then something happened
 <pre><code>./gradlew publishAllTemplates
 </code></pre>
 <p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
-<h2>Release process</h2>
+<h2>Release Process</h2>
 <p>Steps:</p>
 <ul>
   <li>Change version in gradle.properties</li>
