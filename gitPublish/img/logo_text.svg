@@ -2,13 +2,21 @@
 <svg
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   width="415"
+   width="1550"
    height="360"
-   viewBox="0 0 415 360">
+   viewBox="0 0 1550 360">
 
   <defs>
     <style type="text/css">
+      @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
       #pathUp { fill: #135AA1; }
+      #logoText {
+        font-style:italic;
+        font-weight:bold;
+        font-size:320px;
+        font-family: Roboto Condensed;
+        fill:#135aa1;
+      }
     </style>
 
     <linearGradient id="linearGradient">
@@ -48,5 +56,6 @@
   <g>
     <path d="M 0,177 102,0 l 205,0 L 329,35 265,142 l -81,0 42,-71 -81,0 L 40,248 Z" id="pathUp" />
     <use xlink:href="#pathUp" transform="matrix(-1,0,0,-1,409,354)" />
+    <text x="450" y="285" id="logoText">Hexagon</text>
   </g>
 </svg>
