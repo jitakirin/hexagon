@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Hexagon
+    Ideas
   </title>
 
 
@@ -127,44 +127,29 @@
 
     <div class="container">
 
-<h1>Events</h1>
-<pre><code>import com.hexagonkt.helpers.CompanionLogger
-import org.testng.annotations.AfterClass
-import org.testng.annotations.BeforeClass
-import org.testng.annotations.Test
-import java.lang.System.nanoTime
-import java.lang.Thread.`yield` as threadYield
+<p>Composition over inheritance</p>
+<p>Auth <a href="https://shiro.apache.org/java-authentication-guide.html">https://shiro.apache.org/java-authentication-guide.html</a><br/>Subject: uid (can be a system, not a person)<br/>Credential: pass, public Key<br/>Principal: personal data name, nick, birthday<br/>Role:<br/>Permission: action:type:id<br/>User: physical human user</p>
+<p>Settings/Configuration: a component will have its credentials (as a user) to login in services<br/>it will have a subject (its project name)</p>
+<p>System:</p>
+<p>Components: API, message broker<br/>Applications: are a kind of component which is final (meant for users)<br/>WebApplication, Desktop Application, Mobile Application or Browser Aplication</p>
+<p>For components:<br/>Services: local or remote functionalities (interfaces), implementations will be *Client or<br/>*Engine Ie:<br/> MessagingService &lt;- RabbitMqClient, JeroMqClient<br/> StorageService &lt;- RedisClient, MongoDbClient, CouchBaseClient</p>
+<pre><code>SettingsService &lt;- LocalSettingsEngine, EventSettingsEngine
+ServerService &lt;- ServletEngine, JettyServletEngine, UndertowEngine
+ClientService &lt;- OkHttpEngine
+SerializationService &lt;- MessagePackFormat
+TemplateService
 
-@Test class EventsDemo {
-    class TickEvent (val nanos: Long) : Event (TickEvent::class.java.name)
-
-    companion object : CompanionLogger(EventsDemo::class)
-
-    private var tick: Long = 0
-
-    @BeforeClass fun startConsumer() {
-        EventManager.on(TickEvent::class) {
-            info(&quot;Tick: ${it.nanos}&quot;)
-            tick = it.nanos
-        }
-    }
-
-    @AfterClass fun deleteTestQueue() {
-        EventManager.client.deleteQueue(TickEvent::class.java.name)
-    }
-
-    fun events_are_published_properly() {
-        val nanos = nanoTime()
-        EventManager.publish(TickEvent(nanos))
-
-        // Wait for the consumer to handle the event
-        while (tick == 0L)
-            threadYield()
-
-        assert(tick == nanos)
-    }
-}
+MetricsService &lt;- MetricsClient TODO
+RegistryService &lt;- ConsulClient TODO
 </code></pre>
+<p>ServiceClient: implementations to access a concrete type of service<br/>ComponentClient:</p>
+<p>Managers: singletons to manage across an application and/or between services<br/> EventManager<br/> SettingsManager<br/> TemplatesManager</p>
+<p>Packaging and deployment</p>
+<p>TODO<br/><code>Exchange.call</code> method to redirect to other handler<br/>Add auto parsing/serializing of body/response based on a type<br/> Ie: Add get&lt;Request, Response&gt;("/path") {} (for all methods)<br/>Add <code>Exchange.body/headers/params</code> as Sinatra. Ie: headers["Date"] = date<br/>Streaming support if returning a stream</p>
+<p>Settings load order:<br/> resources &lt;- system properties &lt;- environment variables &lt;- files &lt;- command line arguments</p>
+<p>Render template if no route found and template with that name exist (after filter)</p>
+<p>Use Hexagon static site builder (to be developed) to generate site<br/>Create kjava.gradle, kjavascript.gradle, kandroid.gradle</p>
+<p>Server contains a list of RequestHandler (a router is only a list of RequestHandler)<br/>Move router funtions to package as functions that produce RequestHandlers</p>
 
     <div id="push"></div>
   </div>

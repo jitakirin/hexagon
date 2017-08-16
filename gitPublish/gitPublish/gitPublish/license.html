@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Hexagon
+    License
   </title>
 
 
@@ -127,44 +127,11 @@
 
     <div class="container">
 
-<h1>Events</h1>
-<pre><code>import com.hexagonkt.helpers.CompanionLogger
-import org.testng.annotations.AfterClass
-import org.testng.annotations.BeforeClass
-import org.testng.annotations.Test
-import java.lang.System.nanoTime
-import java.lang.Thread.`yield` as threadYield
-
-@Test class EventsDemo {
-    class TickEvent (val nanos: Long) : Event (TickEvent::class.java.name)
-
-    companion object : CompanionLogger(EventsDemo::class)
-
-    private var tick: Long = 0
-
-    @BeforeClass fun startConsumer() {
-        EventManager.on(TickEvent::class) {
-            info(&quot;Tick: ${it.nanos}&quot;)
-            tick = it.nanos
-        }
-    }
-
-    @AfterClass fun deleteTestQueue() {
-        EventManager.client.deleteQueue(TickEvent::class.java.name)
-    }
-
-    fun events_are_published_properly() {
-        val nanos = nanoTime()
-        EventManager.publish(TickEvent(nanos))
-
-        // Wait for the consumer to handle the event
-        while (tick == 0L)
-            threadYield()
-
-        assert(tick == nanos)
-    }
-}
-</code></pre>
+<h1>MIT License</h1>
+<p>Copyright (c) 2016 Juanjo Aguililla</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy<br/>of this software and associated documentation files (the "Software"), to deal<br/>in the Software without restriction, including without limitation the rights<br/>to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br/>copies of the Software, and to permit persons to whom the Software is<br/>furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all<br/>copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br/>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br/>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<br/>AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<br/>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br/>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE<br/>SOFTWARE.</p>
 
     <div id="push"></div>
   </div>
