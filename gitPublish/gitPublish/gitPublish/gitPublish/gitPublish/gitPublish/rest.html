@@ -127,73 +127,53 @@
 
     <div class="container">
 
-<h1>Service Lifecycle</h1>
-<h2>Create a service</h2>
-<h3>From scratch</h3>
-<p>To build Hexagon services you have some Gradle helpers that you can use on your own project. To<br/>use them, you can use the online versions, or copy them to your <code>gradle</code> directory.</p>
-<h3>From a template</h3>
-<pre><code class="bash">curl -s get.sdkman.io | bash &amp;&amp; source ~/.sdkman/bin/sdkman-init.sh
-sdk i lazybones
-mkdir ~/.lazybones # Bug with Lazybones?
-lazybones config set bintrayRepositories pledbrook/lazybones-templates jamming/maven
-lazybones create hexagon-service service -Pgroup=org.example -Pversion=0.1 -Pdescription=Description
-cd service
-gradle/wrapper
-</code></pre>
-<h2>Directory structure</h2>
-<p>The project uses the standard Gradle structure. Gradle wrapper changed to be stored in the <code>gradle</code><br/>folder instead of the project root</p>
-<h2>Running and Testing</h2>
-<p>gw run<br/>gw -x test -t runService # Continuous mode AKA watch</p>
-<h2>Packaging and Deployment</h2>
-<p>Build scripts:</p>
-<ul>
-  <li><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin: Adds Kotlin libraries, setup coverage report,<br/>filter project resources with build variables. To use it you need to:
-    <ul>
-      <li>Define the <code>kotlinVersion</code> variable to <code>gradle.properties</code> file.</li>
-      <li>Add the following code to <code>build.gradle</code></li>
-    </ul>
-  </li>
-</ul>
-<pre><code class="Groovy">      buildscript {
-          repositories {
-              jcenter ()
-          }
-      
-          dependencies {
-              classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion&quot;
-          }
-      }
-</code></pre>
-<ul>
-  <li>
-    <p><code>service.gradle</code>: Gradle's script for a service or application.</p>
-    <p>Tasks:<br/>- runService: for continuous run (AKA "Watch")<br/>- install: <code>systemdService</code>: script that support start/stop/status<br/>- buildInfo / processResources</p>
-    <p>Variables:<br/>- deployDir<br/>- serviceUser<br/>- serviceGroup</p>
-    <p>Use Systemd service:</p>
-    <p>Copy this file to '/etc/systemd/system' and then:<br/> - To start the service execute: sudo systemctl start hexagon<br/> - To run the service at boot type: sudo systemctl enable hexagon</p>
-  </li>
-  <li>
-    <p><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).</p>
-    <ul>
-      <li>siteSource</li>
-      <li>siteTarget</li>
-    </ul>
-    <p>To apply this script, you need to add the JBake plugin manually at the top of your build script<br/>as that is not possible in included scripts like this one. These are the required lines to do so:</p>
-    <pre><code class="gradle">plugins {
-    id &#39;org.xbib.gradle.plugin.jbake&#39; version &#39;1.2.1&#39;
+<h1>REST</h1>
+<pre><code>import com.hexagonkt.store.MongoIdRepository
+import com.hexagonkt.store.mongoDatabase
+import com.hexagonkt.serialization.parse
+import com.hexagonkt.serialization.parseList
+import com.hexagonkt.serialization.serialize
+import org.testng.annotations.Test
+import java.net.URL
+
+@Test class RestTest {
+    data class Parameter (val name: String, val value: String)
+
+    val parametersRepository = MongoIdRepository(
+        type = Parameter::class,
+        database = mongoDatabase(),
+        keyName = &quot;name&quot;,
+        keyType = String::class,
+        keySupplier = { it.name },
+        publishEvents = false
+    )
+
+    fun crud_handles_entities_nicely () {
+        crud(parametersRepository)
+        run()
+
+        val client = HttpClient (URL (&quot;http://localhost:${server.bindPort}&quot;))
+
+        val parameter = Parameter(&quot;key&quot;, &quot;value&quot;)
+        val modifiedParameter = parameter.copy(value = &quot;changed value&quot;)
+
+        assert (client.getBody(&quot;/Parameter&quot;) == &quot;[ ]&quot;)
+        assert (client.post(&quot;/Parameter&quot;, parameter.serialize()).code() == 201)
+        assert (paramList(client.getBody(&quot;/Parameter&quot;)) == listOf (parameter))
+        assert (param(client.getBody(&quot;/Parameter/${parameter.name}&quot;)) == parameter)
+        assert (client.put(&quot;/Parameter&quot;, modifiedParameter.serialize()).code() == 200)
+        assert (param(client.getBody(&quot;/Parameter/${modifiedParameter.name}&quot;)) == modifiedParameter)
+        assert (client.delete(&quot;/Parameter/${parameter.name}&quot;).code() == 200)
+        assert (client.get(&quot;/Parameter/${parameter.name}&quot;).code() == 404)
+        assert (client.getBody(&quot;/Parameter&quot;) == &quot;[ ]&quot;)
+
+        server.stop()
+    }
+
+    private fun param (json: String?) = json?.parse (Parameter::class) ?: error
+    private fun paramList (json: String?) = json?.parseList (Parameter::class) ?: error
 }
 </code></pre>
-  </li>
-</ul>
-<h2>Configuration files</h2>
-<ul>
-  <li>service.yaml (see configuration.md)</li>
-  <li>logback.xml</li>
-</ul>
-<p>Templates: Pebble (optional dependencies)</p>
-<h2>Deploy on Systemd</h2>
-<h2>Deploy on Servlet engine</h2>
-<h2>Deploy on Docker</h2>
 
     <div id="push"></div>
   </div>

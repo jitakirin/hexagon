@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Hexagon
+    Contribute
   </title>
 
 
@@ -127,73 +127,94 @@
 
     <div class="container">
 
-<h1>Service Lifecycle</h1>
-<h2>Create a service</h2>
-<h3>From scratch</h3>
-<p>To build Hexagon services you have some Gradle helpers that you can use on your own project. To<br/>use them, you can use the online versions, or copy them to your <code>gradle</code> directory.</p>
-<h3>From a template</h3>
-<pre><code class="bash">curl -s get.sdkman.io | bash &amp;&amp; source ~/.sdkman/bin/sdkman-init.sh
-sdk i lazybones
-mkdir ~/.lazybones # Bug with Lazybones?
-lazybones config set bintrayRepositories pledbrook/lazybones-templates jamming/maven
-lazybones create hexagon-service service -Pgroup=org.example -Pversion=0.1 -Pdescription=Description
-cd service
-gradle/wrapper
+<h2>Build</h2>
+<p>Requires <a href="https://docs.docker.com/compose/install">Docker Compose installed</a></p>
+<p>You can build the project, generate the documentation and install it in your local repository<br/>typing:</p>
+<pre><code>git clone https://github.com/hexagonkt/hexagon.git
+cd hexagon
+docker-compose up -d
+./gradlew clean site publishLocal installAllTemplates
 </code></pre>
-<h2>Directory structure</h2>
-<p>The project uses the standard Gradle structure. Gradle wrapper changed to be stored in the <code>gradle</code><br/>folder instead of the project root</p>
-<h2>Running and Testing</h2>
-<p>gw run<br/>gw -x test -t runService # Continuous mode AKA watch</p>
-<h2>Packaging and Deployment</h2>
-<p>Build scripts:</p>
+<p>The results are located in the <code>/build</code> directory. And the site in <code>/hexagon_site/build</code>.</p>
+<h2>Local Setup</h2>
+<p>You can define some useful aliases like:</p>
+<pre><code>alias gw=&#39;./gradlew&#39;
+alias dcupd=&#39;docker-compose up -d&#39;
+alias hx=&#39;cd ${hexagonHome}&#39;
+alias hxall=&#39;hx &amp;&amp; gw clean site installDist installAllTemplates&#39;
+</code></pre>
+<p>It is recommended that you add: <code>gradlew clean site installDist installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
+<p>If you want to commit to the project. It is convenient to setup your own <a href="https://travis-ci.org">Travis</a> account to execute<br/>the CI job defined in <code>.travis.yml</code>.</p>
+<p>To use IntelliJ Idea you need to enable <code>Build, Execution, Deployment &gt; Build Tools &gt; Gradle &gt;
+Create separate module per source set</code> in order to compile JMH tests.</p>
+<p>Inside Idea IDE, you need to review Kotlin's settings to make sure JVM 1.8 and API 1.1 is used<br/>(<code>Project Structure &gt; Modules &gt; &lt;Any Module&gt; &gt; Kotlin &gt; Target Platform</code>).</p>
+<h2>Tools Used</h2>
 <ul>
-  <li><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin: Adds Kotlin libraries, setup coverage report,<br/>filter project resources with build variables. To use it you need to:
-    <ul>
-      <li>Define the <code>kotlinVersion</code> variable to <code>gradle.properties</code> file.</li>
-      <li>Add the following code to <code>build.gradle</code></li>
-    </ul>
-  </li>
+  <li><a href="https://travis-ci.org">Travis</a>: For continuous integration.</li>
+  <li><a href="https://codecov.io">Codecov</a>: To check code coverage.</li>
+  <li><a href="https://github.com">Github</a>: Web hosting, project board and code hosting.</li>
+  <li><a href="https://bintray.com">Bintray</a>: Artifact repository for JARs.</li>
+  <li><a href="https://github.com/tj/git-extras">Git Extras</a>: Git goodies.</li>
 </ul>
-<pre><code class="Groovy">      buildscript {
-          repositories {
-              jcenter ()
-          }
-      
-          dependencies {
-              classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion&quot;
-          }
-      }
+<h2>Bintray Publish</h2>
+<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in <code>local.gradle</code>. Ie:</p>
+<pre><code class="groovy">ext.bintrayUser = &#39;jaguililla&#39;
+ext.bintrayKey = &#39;cafebabe&#39;
 </code></pre>
+<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
+<h2>Contribute</h2>
 <ul>
   <li>
-    <p><code>service.gradle</code>: Gradle's script for a service or application.</p>
-    <p>Tasks:<br/>- runService: for continuous run (AKA "Watch")<br/>- install: <code>systemdService</code>: script that support start/stop/status<br/>- buildInfo / processResources</p>
-    <p>Variables:<br/>- deployDir<br/>- serviceUser<br/>- serviceGroup</p>
-    <p>Use Systemd service:</p>
-    <p>Copy this file to '/etc/systemd/system' and then:<br/> - To start the service execute: sudo systemctl start hexagon<br/> - To run the service at boot type: sudo systemctl enable hexagon</p>
-  </li>
+  <p>For code, file names, tags and branches use either camel case or snake case only. Ie: avoid <code>-</code> in<br/> file names if it is possible.</p></li>
   <li>
-    <p><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).</p>
-    <ul>
-      <li>siteSource</li>
-      <li>siteTarget</li>
-    </ul>
-    <p>To apply this script, you need to add the JBake plugin manually at the top of your build script<br/>as that is not possible in included scripts like this one. These are the required lines to do so:</p>
-    <pre><code class="gradle">plugins {
-    id &#39;org.xbib.gradle.plugin.jbake&#39; version &#39;1.2.1&#39;
-}
-</code></pre>
-  </li>
+  <p>For a Pull Request to be accepted:</p></li>
+  <li>It has to pass all PR checks.</li>
+  <li>All public and internal methods and field must be documented using<br/><a href="https://github.com/Kotlin/dokka">Dokka</a>.</li>
+  <li>
+  <p>Commit format: the preferred commit format would have:</p></li>
+  <li>Summary: small summary of the change. In imperative form.</li>
+  <li>Description: a more complete description of the issue. It is optional.</li>
+  <li>Issue Id: it should be written in Github's format: <code>#taskNumber</code>. Optional.</li>
 </ul>
-<h2>Configuration files</h2>
+<p>```<br/> Summary</p>
+<p>[Description]</p>
+<p>[#Id]<br/> ```</p>
 <ul>
-  <li>service.yaml (see configuration.md)</li>
-  <li>logback.xml</li>
+  <li>Bug format: when filing bugs please use the given, when, then format. Ie:</li>
 </ul>
-<p>Templates: Pebble (optional dependencies)</p>
-<h2>Deploy on Systemd</h2>
-<h2>Deploy on Servlet engine</h2>
-<h2>Deploy on Docker</h2>
+<p><code>
+  Given a condition
+  And another condition
+  When an action is taken
+  And other after the first
+  Then something happened
+</code></p>
+<ul>
+  <li>PRs should be done to <code>master</code></li>
+</ul>
+<h2>Tasks and Milestones</h2>
+<p>Project's tasks and milestones are tracked in a <a href="https://github.com/hexagonkt/hexagon/projects/1">Github board</a>. You can use that board to check the<br/>roadmap or pick tasks that you wish to contribute.</p>
+<h2>Lazybones Templates</h2>
+<p>The <a href="https://github.com/pledbrook/lazybones">Lazybones</a> templates are located in the <code>hexagon_starters</code> module. Each subdirectory is a<br/>different template.</p>
+<p>You can package and install the templates locally with the command:</p>
+<pre><code>./gradlew installAllTemplates
+</code></pre>
+<p>You'll then be able to use Lazybones to create new projects from these templates. To distribute<br/>them, you will need to set up a Bintray account, populate the <code>repositoryUrl</code>, <code>repositoryUsername</code><br/>and <code>repositoryApiKey</code> settings in <code>build.gradle</code>, and finally publish the templates with:</p>
+<pre><code>./gradlew publishAllTemplates
+</code></pre>
+<p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
+<h2>Release Process</h2>
+<p>Steps:</p>
+<ul>
+  <li>Change version in gradle.properties</li>
+  <li>Commit all changes</li>
+  <li>Build and publish (binary and documentation)</li>
+  <li>Tag changes</li>
+  <li>Push changes and tag</li>
+</ul>
+<p>Command:</p>
+<pre><code>gw release &amp;&amp; git push --tags
+</code></pre>
 
     <div id="push"></div>
   </div>

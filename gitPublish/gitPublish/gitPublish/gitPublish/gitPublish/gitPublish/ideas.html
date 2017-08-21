@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Hexagon
+    Ideas
   </title>
 
 
@@ -127,73 +127,29 @@
 
     <div class="container">
 
-<h1>Service Lifecycle</h1>
-<h2>Create a service</h2>
-<h3>From scratch</h3>
-<p>To build Hexagon services you have some Gradle helpers that you can use on your own project. To<br/>use them, you can use the online versions, or copy them to your <code>gradle</code> directory.</p>
-<h3>From a template</h3>
-<pre><code class="bash">curl -s get.sdkman.io | bash &amp;&amp; source ~/.sdkman/bin/sdkman-init.sh
-sdk i lazybones
-mkdir ~/.lazybones # Bug with Lazybones?
-lazybones config set bintrayRepositories pledbrook/lazybones-templates jamming/maven
-lazybones create hexagon-service service -Pgroup=org.example -Pversion=0.1 -Pdescription=Description
-cd service
-gradle/wrapper
+<p>Composition over inheritance</p>
+<p>Auth <a href="https://shiro.apache.org/java-authentication-guide.html">https://shiro.apache.org/java-authentication-guide.html</a><br/>Subject: uid (can be a system, not a person)<br/>Credential: pass, public Key<br/>Principal: personal data name, nick, birthday<br/>Role:<br/>Permission: action:type:id<br/>User: physical human user</p>
+<p>Settings/Configuration: a component will have its credentials (as a user) to login in services<br/>it will have a subject (its project name)</p>
+<p>System:</p>
+<p>Components: API, message broker<br/>Applications: are a kind of component which is final (meant for users)<br/>WebApplication, Desktop Application, Mobile Application or Browser Aplication</p>
+<p>For components:<br/>Services: local or remote functionalities (interfaces), implementations will be *Client or<br/>*Engine Ie:<br/> MessagingService &lt;- RabbitMqClient, JeroMqClient<br/> StorageService &lt;- RedisClient, MongoDbClient, CouchBaseClient</p>
+<pre><code>SettingsService &lt;- LocalSettingsEngine, EventSettingsEngine
+ServerService &lt;- ServletEngine, JettyServletEngine, UndertowEngine
+ClientService &lt;- OkHttpEngine
+SerializationService &lt;- MessagePackFormat
+TemplateService
+
+MetricsService &lt;- MetricsClient TODO
+RegistryService &lt;- ConsulClient TODO
 </code></pre>
-<h2>Directory structure</h2>
-<p>The project uses the standard Gradle structure. Gradle wrapper changed to be stored in the <code>gradle</code><br/>folder instead of the project root</p>
-<h2>Running and Testing</h2>
-<p>gw run<br/>gw -x test -t runService # Continuous mode AKA watch</p>
-<h2>Packaging and Deployment</h2>
-<p>Build scripts:</p>
-<ul>
-  <li><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin: Adds Kotlin libraries, setup coverage report,<br/>filter project resources with build variables. To use it you need to:
-    <ul>
-      <li>Define the <code>kotlinVersion</code> variable to <code>gradle.properties</code> file.</li>
-      <li>Add the following code to <code>build.gradle</code></li>
-    </ul>
-  </li>
-</ul>
-<pre><code class="Groovy">      buildscript {
-          repositories {
-              jcenter ()
-          }
-      
-          dependencies {
-              classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion&quot;
-          }
-      }
-</code></pre>
-<ul>
-  <li>
-    <p><code>service.gradle</code>: Gradle's script for a service or application.</p>
-    <p>Tasks:<br/>- runService: for continuous run (AKA "Watch")<br/>- install: <code>systemdService</code>: script that support start/stop/status<br/>- buildInfo / processResources</p>
-    <p>Variables:<br/>- deployDir<br/>- serviceUser<br/>- serviceGroup</p>
-    <p>Use Systemd service:</p>
-    <p>Copy this file to '/etc/systemd/system' and then:<br/> - To start the service execute: sudo systemctl start hexagon<br/> - To run the service at boot type: sudo systemctl enable hexagon</p>
-  </li>
-  <li>
-    <p><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).</p>
-    <ul>
-      <li>siteSource</li>
-      <li>siteTarget</li>
-    </ul>
-    <p>To apply this script, you need to add the JBake plugin manually at the top of your build script<br/>as that is not possible in included scripts like this one. These are the required lines to do so:</p>
-    <pre><code class="gradle">plugins {
-    id &#39;org.xbib.gradle.plugin.jbake&#39; version &#39;1.2.1&#39;
-}
-</code></pre>
-  </li>
-</ul>
-<h2>Configuration files</h2>
-<ul>
-  <li>service.yaml (see configuration.md)</li>
-  <li>logback.xml</li>
-</ul>
-<p>Templates: Pebble (optional dependencies)</p>
-<h2>Deploy on Systemd</h2>
-<h2>Deploy on Servlet engine</h2>
-<h2>Deploy on Docker</h2>
+<p>ServiceClient: implementations to access a concrete type of service<br/>ComponentClient:</p>
+<p>Managers: singletons to manage across an application and/or between services<br/> EventManager<br/> SettingsManager<br/> TemplatesManager</p>
+<p>Packaging and deployment</p>
+<p>TODO<br/><code>Exchange.call</code> method to redirect to other handler<br/>Add auto parsing/serializing of body/response based on a type<br/> Ie: Add get&lt;Request, Response&gt;("/path") {} (for all methods)<br/>Add <code>Exchange.body/headers/params</code> as Sinatra. Ie: headers["Date"] = date<br/>Streaming support if returning a stream</p>
+<p>Settings load order:<br/> resources &lt;- system properties &lt;- environment variables &lt;- files &lt;- command line arguments</p>
+<p>Render template if no route found and template with that name exist (after filter)</p>
+<p>Use Hexagon static site builder (to be developed) to generate site<br/>Create kjava.gradle, kjavascript.gradle, kandroid.gradle</p>
+<p>Server contains a list of RequestHandler (a router is only a list of RequestHandler)<br/>Move router funtions to package as functions that produce RequestHandlers</p>
 
     <div id="push"></div>
   </div>
