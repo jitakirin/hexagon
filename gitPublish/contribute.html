@@ -23,7 +23,7 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <title>
-    Hexagon
+    Contribute
   </title>
 
 
@@ -127,70 +127,94 @@
 
     <div class="container">
 
-<h1>HEXAGON 0.21.0</h1>
-<h3>The atoms of your platform</h3>
-<p>Hexagon is a microservices framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
-<ul>
-  <li>HTTP routing and HTML templates.</li>
-  <li>Serialization and storage of domain classes.</li>
-  <li>Asynchronous communication through events.</li>
-  <li>Task scheduling using Cron expressions.</li>
-</ul>
-<p>The purpose of the project is to provide a microservices framework with the following priorities<br/>(in order):</p>
-<ol>
-  <li>Simple to use</li>
-  <li>Easily hackable</li>
-  <li>Be small</li>
-</ol>
-<h2>Performance</h2>
-<p>Performance is not the primary goal, but it is taken seriously. You can check performance numbers<br/>in the <a href="https://www.techempower.com/benchmarks">TechEmpower Web Framework Benchmarks</a></p>
-<p><strong>DISCLAIMER</strong>: The project status is beta. Use it at your own risk. This is the coverage grid:</p>
-<p><img src="https://codecov.io/gh/hexagonkt/hexagon/branch/master/graphs/tree.svg" alt="coverage" /></p>
-<h2>Getting started</h2>
-<p>For detailed information about how to create a service, please refer to the <a href="life_cycle.html">Service Life Cycle</a><br/>documentation.</p>
-<p>You can create a service from a <a href="https://github.com/pledbrook/lazybones">Lazybones</a> template. To do so type:<br/><code>lazybones create hexagon-service service</code></p>
-<p>Or you can write a <a href="https://gradle.org/">Gradle</a> project from scratch (Gradle 3 is required):</p>
-<p><code>build.gradle</code>:</p>
-<pre><code class="groovy">buildscript {
-    repositories { jcenter () }
-    dependencies { classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.6&quot; }
-}
-
-apply plugin: &quot;kotlin&quot;
-apply plugin: &quot;application&quot;
-
-mainClassName = &#39;HelloKt&#39;
-
-repositories { jcenter () }
-
-dependencies {
-    compile (&quot;com.hexagonkt:hexagon_core:0.21.0&quot;)
-    compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.16.v20170120&quot;)
-}
+<h2>Build</h2>
+<p>Requires <a href="https://docs.docker.com/compose/install">Docker Compose installed</a></p>
+<p>You can build the project, generate the documentation and install it in your local repository<br/>typing:</p>
+<pre><code>git clone https://github.com/hexagonkt/hexagon.git
+cd hexagon
+docker-compose up -d
+./gradlew clean site publishLocal installAllTemplates
 </code></pre>
-<p><code>src/main/kotlin/Hello.kt</code>:</p>
-<pre><code class="kotlin">import com.hexagonkt.server.*
-
-fun main(args: Array&lt;String&gt;) {
-    get(&quot;/hello/{name}&quot;) { ok(&quot;Hello ${request[&quot;name&quot;]}!&quot;) }
-    run()
-}
+<p>The results are located in the <code>/build</code> directory. And the site in <code>/hexagon_site/build</code>.</p>
+<h2>Local Setup</h2>
+<p>You can define some useful aliases like:</p>
+<pre><code>alias gw=&#39;./gradlew&#39;
+alias dcupd=&#39;docker-compose up -d&#39;
+alias hx=&#39;cd ${hexagonHome}&#39;
+alias hxall=&#39;hx &amp;&amp; gw clean site installDist installAllTemplates&#39;
 </code></pre>
-<p>Now you can run the service with <code>gradle run</code> and view the results at:<br/><a href="http://localhost:2010/hello/world">http://localhost:2010/hello/world</a></p>
-<h2>Further resources</h2>
+<p>It is recommended that you add: <code>gradlew clean site installDist installAllTemplates</code> to<br/>your <code>.git/hooks/pre-push</code> script. As it will be checked by <a href="https://travis-ci.org">Travis</a> before the PRs.</p>
+<p>If you want to commit to the project. It is convenient to setup your own <a href="https://travis-ci.org">Travis</a> account to execute<br/>the CI job defined in <code>.travis.yml</code>.</p>
+<p>To use IntelliJ Idea you need to enable <code>Build, Execution, Deployment &gt; Build Tools &gt; Gradle &gt;
+Create separate module per source set</code> in order to compile JMH tests.</p>
+<p>Inside Idea IDE, you need to review Kotlin's settings to make sure JVM 1.8 and API 1.1 is used<br/>(<code>Project Structure &gt; Modules &gt; &lt;Any Module&gt; &gt; Kotlin &gt; Target Platform</code>).</p>
+<h2>Tools Used</h2>
 <ul>
-  <li><a href="life_cycle.html">Service Life Cycle</a>: provide helpers to create, build and package your services.</li>
-  <li><a href="rest.html">HTTP</a>: Web routing and filters. It is handled like the <a href="http://sinatrarb.com">Sinatra</a> Ruby framework.</li>
-  <li><a href="serialization.html">Serialization</a>: helper methods to serialize/deserialize <code>data classes</code> using different formats.</li>
-  <li><a href="storage.html">Storage</a>: utilities to persist Kotlin objects into <a href="https://www.mongodb.com">MongoDB</a> collections.</li>
-  <li><a href="events.html">Events</a>: support asynchronous communication with events through the <a href="http://www.rabbitmq.com">RabbitMQ</a> message broker.</li>
-  <li><a href="configuration.html">Configuration</a>: allow the configuration of the engine by using YAML files.</li>
-  <li><a href="scheduling.html">Scheduling</a>: supports the execution of tasks periodically using Cron expressions.</li>
-  <li><a href="templates.html">Templates</a>: allow the service to render results using <a href="http://www.mitchellbosecke.com/pebble/home">Pebble</a> or <a href="https://github.com/Kotlin/kotlinx.html">kotlinx.html</a>.</li>
-  <li><a href="testing.html">Testing</a>: Hexagon adds utilities to ease the testing of its services.</li>
+  <li><a href="https://travis-ci.org">Travis</a>: For continuous integration.</li>
+  <li><a href="https://codecov.io">Codecov</a>: To check code coverage.</li>
+  <li><a href="https://github.com">Github</a>: Web hosting, project board and code hosting.</li>
+  <li><a href="https://bintray.com">Bintray</a>: Artifact repository for JARs.</li>
+  <li><a href="https://github.com/tj/git-extras">Git Extras</a>: Git goodies.</li>
 </ul>
-<h2>Build and Contribute</h2>
-<p>Refer to the <a href="contribute.html">contribute</a> section for detailed information about Hexagon's development.</p>
+<h2>Bintray Publish</h2>
+<p>To deploy on Bintray you need to set <code>bintrayUser</code> and <code>bintrayKey</code> in <code>local.gradle</code>. Ie:</p>
+<pre><code class="groovy">ext.bintrayUser = &#39;jaguililla&#39;
+ext.bintrayKey = &#39;cafebabe&#39;
+</code></pre>
+<p>NOTE: For the package to be accepted in JCenter, you need to include sources (sourceJar task).</p>
+<h2>Contribute</h2>
+<ul>
+  <li>
+  <p>For code, file names, tags and branches use either camel case or snake case only. Ie: avoid <code>-</code> in<br/> file names if it is possible.</p></li>
+  <li>
+  <p>For a Pull Request to be accepted:</p></li>
+  <li>It has to pass all PR checks.</li>
+  <li>All public and internal methods and field must be documented using<br/><a href="https://github.com/Kotlin/dokka">Dokka</a>.</li>
+  <li>
+  <p>Commit format: the preferred commit format would have:</p></li>
+  <li>Summary: small summary of the change. In imperative form.</li>
+  <li>Description: a more complete description of the issue. It is optional.</li>
+  <li>Issue Id: it should be written in Github's format: <code>#taskNumber</code>. Optional.</li>
+</ul>
+<p>```<br/> Summary</p>
+<p>[Description]</p>
+<p>[#Id]<br/> ```</p>
+<ul>
+  <li>Bug format: when filing bugs please use the given, when, then format. Ie:</li>
+</ul>
+<p><code>
+  Given a condition
+  And another condition
+  When an action is taken
+  And other after the first
+  Then something happened
+</code></p>
+<ul>
+  <li>PRs should be done to <code>master</code></li>
+</ul>
+<h2>Tasks and Milestones</h2>
+<p>Project's tasks and milestones are tracked in a <a href="https://github.com/hexagonkt/hexagon/projects/1">Github board</a>. You can use that board to check the<br/>roadmap or pick tasks that you wish to contribute.</p>
+<h2>Lazybones Templates</h2>
+<p>The <a href="https://github.com/pledbrook/lazybones">Lazybones</a> templates are located in the <code>hexagon_starters</code> module. Each subdirectory is a<br/>different template.</p>
+<p>You can package and install the templates locally with the command:</p>
+<pre><code>./gradlew installAllTemplates
+</code></pre>
+<p>You'll then be able to use Lazybones to create new projects from these templates. To distribute<br/>them, you will need to set up a Bintray account, populate the <code>repositoryUrl</code>, <code>repositoryUsername</code><br/>and <code>repositoryApiKey</code> settings in <code>build.gradle</code>, and finally publish the templates with:</p>
+<pre><code>./gradlew publishAllTemplates
+</code></pre>
+<p>You can find out more about creating templates on <a href="https://github.com/pledbrook/lazybones/wiki/Template-developers-guide">the GitHub wiki</a>.</p>
+<h2>Release Process</h2>
+<p>Steps:</p>
+<ul>
+  <li>Change version in gradle.properties</li>
+  <li>Commit all changes</li>
+  <li>Build and publish (binary and documentation)</li>
+  <li>Tag changes</li>
+  <li>Push changes and tag</li>
+</ul>
+<p>Command:</p>
+<pre><code>gw release &amp;&amp; git push --tags
+</code></pre>
 
     <div id="push"></div>
   </div>
