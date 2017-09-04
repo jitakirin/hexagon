@@ -4,23 +4,23 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><![endif]-->
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="application-name" content="hexagon" />
-  <meta name="author" content="Juanjo Aguililla">
-  <meta name="description" content="The atoms of your platform">
-  <meta name="keywords" content="Hexagon, microservices, Java, Kotlin">
-  <meta name="generator" content="JBake">
+  <meta name="author" content="Juanjo Aguililla" />
+  <meta name="description" content="The atoms of your platform" />
+  <meta name="keywords" content="Hexagon, microservices, Java, Kotlin" />
+  <meta name="generator" content="JBake" />
 
-  <meta name="theme-color" content="#135AA1">
-  <meta name="msapplication-navbutton-color" content="#135AA1">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#135AA1">
+  <meta name="theme-color" content="#135AA1" />
+  <meta name="msapplication-navbutton-color" content="#135AA1" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="#135AA1" />
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
 
   <title>
     Hexagon
@@ -29,24 +29,26 @@
 
   <link
     href="http://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css"
-    rel="stylesheet">
+    rel="stylesheet" />
   <link
     rel="stylesheet"
     href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    type="text/css">
+    type="text/css" />
   <link
     href="css/base.css"
-    rel="stylesheet">
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
+    rel="stylesheet" />
+  <link
+    href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"
+    rel="stylesheet" />
 
   <link
     rel="apple-touch-icon"
     sizes="180x180"
-    href="apple-touch-icon.png">
+    href="apple-touch-icon.png" />
   <link
     rel="shortcut icon"
     sizes="32x32"
-    href="favicon.ico">
+    href="favicon.ico" />
 
   <link rel="author" href="/humans.txt" />
 
@@ -127,7 +129,7 @@
 
     <div class="container">
 
-<h1>HEXAGON 0.21.0</h1>
+<h1>HEXAGON 0.21.1</h1>
 <h3>The atoms of your platform</h3>
 <p>Hexagon is a microservices framework that doesn't follow the flock. It is written in <a href="http://kotlinlang.org">Kotlin</a> and<br/>uses <a href="http://www.rabbitmq.com">RabbitMQ</a> and <a href="https://www.mongodb.com">MongoDB</a>. It takes care of:</p>
 <ul>
@@ -147,7 +149,7 @@
 <p><strong>DISCLAIMER</strong>: The project status is beta. Use it at your own risk. This is the coverage grid:</p>
 <p><img src="https://codecov.io/gh/hexagonkt/hexagon/branch/master/graphs/tree.svg" alt="coverage" /></p>
 <h2>Getting started</h2>
-<p>For detailed information about how to create a service, please refer to the <a href="life_cycle.html">Service Life Cycle</a><br/>documentation.</p>
+<p>For detailed information about how to create a service, please refer to the [Service Life Cycle]<br/>documentation.</p>
 <p>You can create a service from a <a href="https://github.com/pledbrook/lazybones">Lazybones</a> template. To do so type:<br/><code>lazybones create hexagon-service service</code></p>
 <p>Or you can write a <a href="https://gradle.org/">Gradle</a> project from scratch (Gradle 3 is required):</p>
 <p><code>build.gradle</code>:</p>
@@ -164,7 +166,7 @@ mainClassName = &#39;HelloKt&#39;
 repositories { jcenter () }
 
 dependencies {
-    compile (&quot;com.hexagonkt:hexagon_core:0.21.0&quot;)
+    compile (&quot;com.hexagonkt:hexagon_core:0.21.1&quot;)
     compile (&quot;org.eclipse.jetty:jetty-webapp:9.3.16.v20170120&quot;)
 }
 </code></pre>
@@ -179,7 +181,7 @@ fun main(args: Array&lt;String&gt;) {
 <p>Now you can run the service with <code>gradle run</code> and view the results at:<br/><a href="http://localhost:2010/hello/world">http://localhost:2010/hello/world</a></p>
 <h2>Further resources</h2>
 <ul>
-  <li><a href="life_cycle.html">Service Life Cycle</a>: provide helpers to create, build and package your services.</li>
+  <li><a href="services.html">Services</a>: provide helpers to create, build and package your services.</li>
   <li><a href="rest.html">HTTP</a>: Web routing and filters. It is handled like the <a href="http://sinatrarb.com">Sinatra</a> Ruby framework.</li>
   <li><a href="serialization.html">Serialization</a>: helper methods to serialize/deserialize <code>data classes</code> using different formats.</li>
   <li><a href="storage.html">Storage</a>: utilities to persist Kotlin objects into <a href="https://www.mongodb.com">MongoDB</a> collections.</li>

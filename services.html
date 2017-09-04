@@ -4,49 +4,51 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><![endif]-->
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="application-name" content="hexagon" />
-  <meta name="author" content="Juanjo Aguililla">
-  <meta name="description" content="The atoms of your platform">
-  <meta name="keywords" content="Hexagon, microservices, Java, Kotlin">
-  <meta name="generator" content="JBake">
+  <meta name="author" content="Juanjo Aguililla" />
+  <meta name="description" content="The atoms of your platform" />
+  <meta name="keywords" content="Hexagon, microservices, Java, Kotlin" />
+  <meta name="generator" content="JBake" />
 
-  <meta name="theme-color" content="#135AA1">
-  <meta name="msapplication-navbutton-color" content="#135AA1">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#135AA1">
+  <meta name="theme-color" content="#135AA1" />
+  <meta name="msapplication-navbutton-color" content="#135AA1" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="#135AA1" />
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
 
   <title>
-    License
+    Hexagon
   </title>
 
 
   <link
     href="http://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css"
-    rel="stylesheet">
+    rel="stylesheet" />
   <link
     rel="stylesheet"
     href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    type="text/css">
+    type="text/css" />
   <link
     href="css/base.css"
-    rel="stylesheet">
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
+    rel="stylesheet" />
+  <link
+    href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"
+    rel="stylesheet" />
 
   <link
     rel="apple-touch-icon"
     sizes="180x180"
-    href="apple-touch-icon.png">
+    href="apple-touch-icon.png" />
   <link
     rel="shortcut icon"
     sizes="32x32"
-    href="favicon.ico">
+    href="favicon.ico" />
 
   <link rel="author" href="/humans.txt" />
 
@@ -127,11 +129,94 @@
 
     <div class="container">
 
-<h1>MIT License</h1>
-<p>Copyright (c) 2016 Juanjo Aguililla</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy<br/>of this software and associated documentation files (the "Software"), to deal<br/>in the Software without restriction, including without limitation the rights<br/>to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br/>copies of the Software, and to permit persons to whom the Software is<br/>furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all<br/>copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br/>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br/>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<br/>AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<br/>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br/>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE<br/>SOFTWARE.</p>
+<h1>Services</h1>
+<h2>Create a service</h2>
+<h3>From scratch</h3>
+<p>To build Hexagon services you have some Gradle helpers that you can use on your own project. To<br/>use them, you can use the online versions, or copy them to your <code>gradle</code> directory.</p>
+<p>You can write a [Gradle] project from scratch (Gradle 3 or newer is required):</p>
+<p><code>build.gradle</code>:</p>
+<pre><code class="groovy">plugins {
+    id &#39;org.jetbrains.kotlin.jvm&#39; version &#39;1.1.4-2&#39;
+}
+
+apply plugin: &quot;kotlin&quot;
+apply plugin: &quot;application&quot;
+
+mainClassName = &#39;HelloKt&#39;
+
+repositories {
+    jcenter ()
+}
+
+dependencies {
+    compile (&quot;com.hexagonkt:server_jetty:0.21.1&quot;)
+}
+</code></pre>
+<p>Now you can run the service with <code>gradle run</code> and view the results at:<br/><a href="http://localhost:2010/hello/world">http://localhost:2010/hello/world</a></p>
+<h3>From a template</h3>
+<p>You can create a service from a [Lazybones] template. To do so type:<br/><code>lazybones create hexagon-service service</code></p>
+<pre><code class="bash">curl -s get.sdkman.io | bash &amp;&amp; source ~/.sdkman/bin/sdkman-init.sh
+sdk i lazybones
+mkdir ~/.lazybones # Bug with Lazybones?
+lazybones config set bintrayRepositories pledbrook/lazybones-templates jamming/maven
+lazybones create hexagon-service service -Pgroup=org.example -Pversion=0.1 -Pdescription=Description
+cd service
+gradle/wrapper
+</code></pre>
+<h2>Directory structure</h2>
+<p>The project uses the standard Gradle structure. Gradle wrapper changed to be stored in the <code>gradle</code><br/>folder instead of the project root</p>
+<h2>Running and Testing</h2>
+<p>gw run<br/>gw -x test -t runService # Continuous mode AKA watch</p>
+<h2>Packaging and Deployment</h2>
+<p>Build scripts:</p>
+<ul>
+  <li><code>kotlin.gradle</code>: Sets up Kotlin's Gradle plugin: Adds Kotlin libraries, setup coverage report,<br/>filter project resources with build variables. To use it you need to:
+    <ul>
+      <li>Define the <code>kotlinVersion</code> variable to <code>gradle.properties</code> file.</li>
+      <li>Add the following code to <code>build.gradle</code></li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="Groovy">      buildscript {
+          repositories {
+              jcenter ()
+          }
+      
+          dependencies {
+              classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion&quot;
+          }
+      }
+</code></pre>
+<ul>
+  <li>
+    <p><code>service.gradle</code>: Gradle's script for a service or application.</p>
+    <p>Tasks:<br/>- runService: for continuous run (AKA "Watch")<br/>- install: <code>systemdService</code>: script that support start/stop/status<br/>- buildInfo / processResources</p>
+    <p>Variables:<br/>- deployDir<br/>- serviceUser<br/>- serviceGroup</p>
+    <p>Use Systemd service:</p>
+    <p>Copy this file to '/etc/systemd/system' and then:<br/> - To start the service execute: sudo systemctl start hexagon<br/> - To run the service at boot type: sudo systemctl enable hexagon</p>
+  </li>
+  <li>
+    <p><code>site.gradle</code>: Adds support for site generation (with API documentation and reports).</p>
+    <ul>
+      <li>siteSource</li>
+      <li>siteTarget</li>
+    </ul>
+    <p>To apply this script, you need to add the JBake plugin manually at the top of your build script<br/>as that is not possible in included scripts like this one. These are the required lines to do so:</p>
+    <pre><code class="gradle">plugins {
+    id &#39;org.xbib.gradle.plugin.jbake&#39; version &#39;1.2.1&#39;
+}
+</code></pre>
+  </li>
+</ul>
+<h2>Configuration files</h2>
+<ul>
+  <li>service.yaml (see configuration.md)</li>
+  <li>logback.xml</li>
+</ul>
+<p>Templates: Pebble (optional dependencies)</p>
+<h2>Deploy on Systemd</h2>
+<h2>Deploy on Servlet engine</h2>
+<h2>Deploy on Docker</h2>
 
     <div id="push"></div>
   </div>
